@@ -18,13 +18,13 @@ class _HomeScreenState extends State<HomeScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: const HomeAppBar(),
-        body:  Padding(
+        body: Padding(
           padding: const EdgeInsetsDirectional.all(24.0),
           child: Column(
             children: [
               Row(
                 children: [
-                   const Text(
+                  const Text(
                     "تقرير المهمات",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Color(0xFF303A42),
                     ),
                   ),
-                   const Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () => showAddTaskDialog(context),
                     child: Row(
@@ -46,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 20.0,
                           ),
                         ),
-                         const SizedBox(width: 4.0),
-                         const Text(
+                        const SizedBox(width: 4.0),
+                        const Text(
                           "اضافة جديد",
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
@@ -61,9 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 18.0),
-              const Expanded(
-                child: _TasksList(),
-              ),
+              const Expanded(child: _TasksList()),
             ],
           ),
         ),
@@ -72,35 +70,41 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  static BottomNavigationBar _buildBottomNavBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      selectedFontSize: 12.0,
-      selectedItemColor: const Color(0xFF5B8C51),
-      unselectedItemColor: const Color(0xFF5B8C51),
-      selectedLabelStyle: const TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 12.0,
+  static ClipRRect _buildBottomNavBar() {
+    return ClipRRect(
+      borderRadius: const BorderRadiusDirectional.only(
+        topEnd: Radius.circular(32.0),
+        topStart: Radius.circular(32.0),
       ),
-      items: [
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset("assets/images/home.svg"),
-          label: "الرئيسية",
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedFontSize: 12.0,
+        selectedItemColor: const Color(0xFF5B8C51),
+        unselectedItemColor: const Color(0xFF5B8C51),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 12.0,
         ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset("assets/images/info.svg"),
-          label: "احصائياتى",
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset("assets/images/statics.svg"),
-          label: "التقارير",
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset("assets/images/user.svg"),
-          label: "حسابى",
-        ),
-      ],
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/images/home.svg"),
+            label: "الرئيسية",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/images/info.svg"),
+            label: "احصائياتى",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/images/statics.svg"),
+            label: "التقارير",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/images/user.svg"),
+            label: "حسابى",
+          ),
+        ],
+      ),
     );
   }
 }
@@ -112,7 +116,7 @@ class _TasksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) => TaskListItem(),
+      itemBuilder: (context, index) => const TaskListItem(),
       separatorBuilder: (_, __) => const SizedBox(height: 16.0),
       itemCount: 10,
     );

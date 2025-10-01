@@ -4,13 +4,12 @@ import 'package:task/custom_dialog.dart';
 import 'package:task/custom_text_form_field.dart';
 
 void showMaintenanceDialog(BuildContext context) {
-  final itemsNotifier = ValueNotifier<List<MaintenanceItem>>([
-    MaintenanceItem(),
+  final itemsNotifier = ValueNotifier<List<MaintenanceItemModel>>([
+    MaintenanceItemModel(),
   ]);
 
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-
   showDialog(
     barrierColor: Colors.grey[500],
     context: context,
@@ -38,7 +37,7 @@ void showMaintenanceDialog(BuildContext context) {
                   const SizedBox(height: 5.0),
                   const CustomTextFormField(hintText: "عنوان"),
                   const SizedBox(height: 20.0),
-                  ValueListenableBuilder<List<MaintenanceItem>>(
+                  ValueListenableBuilder<List<MaintenanceItemModel>>(
                     valueListenable: itemsNotifier,
                     builder: (context, items, _) {
                       return Column(
@@ -131,6 +130,7 @@ void showMaintenanceDialog(BuildContext context) {
                                 CustomTextFormField(
                                   maxLines: 3,
                                   hintText: "تفاصيل",
+                                  textInputAction: TextInputAction.done,
                                   onChanged: (val) {
                                     item.details = val!;
                                   },
@@ -156,7 +156,7 @@ void showMaintenanceDialog(BuildContext context) {
                           }),
                           TextButton(
                             onPressed: () {
-                              items.add(MaintenanceItem());
+                              items.add(MaintenanceItemModel());
                               itemsNotifier.value = List.from(items);
                             },
                             child: const Text(
@@ -195,9 +195,9 @@ void showMaintenanceDialog(BuildContext context) {
   );
 }
 
-class MaintenanceItem {
+class MaintenanceItemModel {
   String? part;
   String details;
 
-  MaintenanceItem({this.part, this.details = ""});
+  MaintenanceItemModel({this.part, this.details = ""});
 }

@@ -9,6 +9,8 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.textInputAction,
+    this.suffixIcon,
+    this.type,
   });
 
   final String hintText;
@@ -17,16 +19,20 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String? value)? onChanged;
   final Function(String? value)? onFieldSubmitted;
   final TextInputAction? textInputAction;
+  final Widget? suffixIcon;
+  final TextInputType? type;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onSaved: onSaved,
       onChanged: onChanged,
+      keyboardType: type,
       onFieldSubmitted: onFieldSubmitted,
       maxLines: maxLines,
       textInputAction: textInputAction ?? TextInputAction.next,
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Color(0xFFE8ECF4), width: 1.05),
           borderRadius: BorderRadius.circular(8.0),
@@ -48,10 +54,7 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: 12.0,
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 12.0,
-        ),
+        hintStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0),
       ),
       validator: (value) {
         if (value!.isEmpty) {

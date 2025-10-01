@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task/custom_dialog.dart';
+import 'package:task/gas/screens/gas_screen.dart';
 import 'package:task/maintenance/widgets/maintenance_list_item.dart';
 import 'package:task/maintenance/widgets/maintenance_dialog.dart';
 
@@ -12,7 +12,17 @@ class MaintenanceScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const GasScreen()),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsetsDirectional.all(24.0),
           child: Column(

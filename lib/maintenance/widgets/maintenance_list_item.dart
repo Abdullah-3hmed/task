@@ -76,7 +76,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                         valueListenable: _isExpanded,
                         builder: (context, isExpanded, _) {
                           if (!isExpanded) return const SizedBox.shrink();
-                          return   Column(
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
@@ -87,13 +87,22 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                                 ),
                               ),
                               const SizedBox(height: 18.0),
-                              ListView.separated(
+                              CustomScrollView(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    _buildMaintenanceItem(),
-                                separatorBuilder: (_,_)=>const SizedBox(height: 10.0,),
-                                itemCount: 3,
+                                slivers: [
+                                  SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) => Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 10.0,
+                                        ),
+                                        child: _buildMaintenanceItem(),
+                                      ),
+                                      childCount: 3,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           );
@@ -106,7 +115,6 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
             ),
           ),
         ),
-
         ValueListenableBuilder<bool>(
           valueListenable: _isExpanded,
           builder: (context, isExpanded, _) {

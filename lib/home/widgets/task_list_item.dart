@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/app_constants.dart';
 
 class TaskListItem extends StatefulWidget {
-  TaskListItem({super.key});
+  const TaskListItem({super.key});
 
   @override
   State<TaskListItem> createState() => _TaskListItemState();
@@ -112,7 +112,8 @@ class _TaskListItemState extends State<TaskListItem> {
                                 height: 40.0,
                                 shape: RoundedRectangleBorder(
                                   side: const BorderSide(
-                                      color: Color(0xFF5B8C51)),
+                                    color: Color(0xFF5B8C51),
+                                  ),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 onPressed: () {},

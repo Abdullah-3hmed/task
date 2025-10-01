@@ -10,11 +10,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: Padding(
         padding: const EdgeInsetsDirectional.only(start: 12.0),
-        child: Image.asset(
-          "assets/images/logo.png",
-          width: 50.0,
-          height: 50.0,
-        ),
+        child: Image.asset("assets/images/logo.png", width: 50.0, height: 50.0),
       ),
       actions: [
         Padding(
@@ -27,10 +23,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 radius: 20.0,
                 child: Text(
                   "30 كم",
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
                 ),
               ),
               CircleAvatar(

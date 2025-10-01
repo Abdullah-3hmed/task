@@ -18,9 +18,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: AppConstants.fontCairo,
           scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-          ),
+          appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         ),
         home: const HomeScreen(),
       ),
