@@ -1,9 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task/app_constants.dart';
 import 'package:task/custom_dialog.dart';
-import 'package:task/maintenance_list_item.dart';
-import 'package:task/task_list_item.dart';
+import 'package:task/maintenance/widgets/maintenance_list_item.dart';
+import 'package:task/maintenance/widgets/maintenance_dialog.dart';
 
 class MaintenanceScreen extends StatelessWidget {
   const MaintenanceScreen({super.key});
@@ -30,19 +29,7 @@ class MaintenanceScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => CustomDialog(
-                          title: "اضافة صيانة",
-                          subTitle:
-                              "يمكنك اضافة القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
-                          body: Container(),
-                          save: (){},
-                          finish: (){},
-                        ),
-                      );
-                    },
+                    onTap: () => showMaintenanceDialog(context),
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -69,18 +56,25 @@ class MaintenanceScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20.0),
-              Expanded(
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => const MaintenanceListItem(),
-                  separatorBuilder: (_, _) => const SizedBox(height: 16.0),
-                  itemCount: 3,
-                ),
-              ),
+              const Expanded(child: _MaintenanceList()),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MaintenanceList extends StatelessWidget {
+  const _MaintenanceList();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) => const MaintenanceListItem(),
+      separatorBuilder: (_, __) => const SizedBox(height: 16.0),
+      itemCount: 3,
     );
   }
 }
