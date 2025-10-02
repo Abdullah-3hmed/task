@@ -1,60 +1,224 @@
 import 'package:flutter/material.dart';
-import 'package:task/shared/custom_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/show_toast.dart';
+import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/shared/custom_text_form_field.dart';
+import 'package:task/tasks/cubit/tasks_cubit.dart';
+import 'package:task/tasks/cubit/tasks_state.dart';
 
-void showAddTaskDialog(BuildContext context) {
+void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  String name = "";
+  String description = "";
+  final TextEditingController dateController = TextEditingController();
 
   showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setStateDialog) {
-        return CustomDialog(
-          title: "اضافة مهمة",
-          subTitle:
-              "يمكنك اضافة المهام التي تقوم بها عن طريق نموذج التعبئة التالي",
-          body: Form(
-            key: formKey,
-            autovalidateMode: autovalidateMode,
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20.0),
-                Text(
-                  "عنوان المهمة",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0),
+        return Dialog(
+          insetPadding: const EdgeInsets.all(20.0),
+          backgroundColor: Colors.white,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.all(20.0),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20.0),
+                      const Align(
+                        alignment: AlignmentDirectional.center,
+                        child: Text(
+                          "اضافة مهمة",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 40.0),
+                      const Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Text(
+                          "يمكنك اضافة المهام التي تقوم بها عن طريق نموذج التعبئة التالي",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10.0,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Form(
+                        key: formKey,
+                        autovalidateMode: autovalidateMode,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                "عنوان المهمة",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+                            CustomTextFormField(
+                              hintText: "عنوان المهمة",
+                              onSaved: (value) {
+                                name = value!;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            const Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                "تاريخ المهمة",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+                            CustomTextFormField(
+                              controller: dateController,
+                              readOnly: true,
+                              hintText: "تاريخ المهمة (تلقائي)",
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (pickedDate != null) {
+                                  DateTime finalDateTime = DateTime(
+                                    pickedDate.year,
+                                    pickedDate.month,
+                                    pickedDate.day,
+                                    DateTime.now().hour,
+                                    DateTime.now().minute,
+                                    DateTime.now().second,
+                                  );
+
+                                  dateController.text = DateFormat(
+                                    "yyyy-MM-dd HH:mm:ss",
+                                  ).format(finalDateTime);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            const Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                "تفاصيل المهمة",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+                            CustomTextFormField(
+                              hintText: "تفاصيل المهمة",
+                              onSaved: (value) {
+                                description = value!;
+                              },
+                              maxLines: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 30.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 10.0,
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              text: "الغاء",
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              borderColor: const Color(0xFF5B8C51),
+                              backgroundColor: Colors.white,
+                              textColor: const Color(0xFF5B8C51),
+                            ),
+                          ),
+                          BlocProvider.value(
+                            value: cubit,
+                            child: BlocConsumer<TasksCubit, TasksState>(
+                              listenWhen: (prev, curr) =>
+                                  prev.addTaskState != curr.addTaskState,
+                              listener: (context, state) {
+                                if (state.addTaskState.isError) {
+                                  showToast(
+                                    context: context,
+                                    message: state.taskErrorMessage,
+                                    state: ToastStates.error,
+                                  );
+                                }
+                                if (state.addTaskState.isSuccess) {
+                                  showToast(
+                                    context: context,
+                                    message:
+                                        state.addTaskResponseModel.message,
+                                    state: ToastStates.success,
+                                  );
+                                }
+                              },
+                              buildWhen: (prev, curr) =>
+                                  prev.addTaskState != curr.addTaskState,
+                              builder: (context, state) {
+                                return Expanded(
+                                  child: PrimaryButton(
+                                    isLoading: state.addTaskState.isLoading,
+                                    text: "حفظ التغيرات",
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        formKey.currentState!.save();
+                                        cubit.addTask(
+                                          name: name,
+                                          description: description,
+                                          date: dateController.text,
+                                        );
+                                      } else {
+                                        setStateDialog(() {
+                                          autovalidateMode =
+                                              AutovalidateMode.always;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                CustomTextFormField(hintText: "عنوان المهمة"),
-                SizedBox(height: 20.0),
-                Text(
-                  "تاريخ المهمة",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0),
+              ),
+              PositionedDirectional(
+                top: 26.0,
+                end: 26.0,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.close),
                 ),
-                CustomTextFormField(hintText: "تاريخ المهمة (تلقائي)"),
-                SizedBox(height: 20.0),
-                Text(
-                  "تفاصيل المهمة",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0),
-                ),
-                CustomTextFormField(
-                  hintText: "تفاصيل المهمة",
-                  maxLines: 5,
-                  textInputAction: TextInputAction.done,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          save: () {
-            if (formKey.currentState!.validate()) {
-              formKey.currentState!.save();
-            } else {
-              setStateDialog(() {
-                autovalidateMode = AutovalidateMode.always;
-              });
-            }
-          },
-          finish: () {},
         );
       },
     ),

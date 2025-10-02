@@ -5,6 +5,7 @@ import 'package:task/core/network/api_constants.dart';
 import 'package:task/core/network/dio_helper.dart';
 import 'package:task/core/utils/app_constants.dart';
 import 'package:task/core/utils/safe_api_call.dart';
+import 'package:task/tasks/data/add_task_response_model.dart';
 import 'package:task/tasks/data/task_model.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 
@@ -17,16 +18,38 @@ class TasksRepoImpl implements TasksRepo {
   Future<Either<Failure, List<TaskModel>>> getUserTasks({required int userId}) {
     return safeApiCall<List<TaskModel>>(() async {
       final response = await dioHelper.get(
-        headers: {
-          "Authorization": "Bearer ${AppConstants.token}",
-        },
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
         url: ApiConstants.getUserTasksEndPoint,
-        data: {"ad_id":userId},
+        data: {"ad_id": userId},
       );
       if (response.statusCode == 200) {
         return List<TaskModel>.from(
           (response.data["data"] ?? []).map((x) => TaskModel.fromJson(x)),
         );
+      } else {
+        throw ServerException(errorMessage: response.data["message"]);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, AddTaskResponseModel>> addTask({
+    required String name,
+    required String description,
+    required String date,
+  }) async {
+    return safeApiCall<AddTaskResponseModel>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.addTaskEndPoint,
+        data: {
+          "name": name,
+          "description": description,
+          "start_date_time": date,
+        },
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      );
+      if (response.statusCode == 200) {
+        return AddTaskResponseModel.fromJson(response.data);
       } else {
         throw ServerException(errorMessage: response.data["message"]);
       }

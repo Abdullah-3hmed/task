@@ -17,6 +17,8 @@ void showMaintenanceDialog(BuildContext context) {
       return StatefulBuilder(
         builder: (context, setStateDialog) {
           return CustomDialog(
+            onSave: (){},
+
             title: "اضافة صيانة",
             subTitle:
                 "يمكنك اضافة القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
@@ -175,19 +177,6 @@ void showMaintenanceDialog(BuildContext context) {
                 ],
               ),
             ),
-            save: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                for (var item in itemsNotifier.value) {
-                  debugPrint("${item.part}, ${item.details}");
-                }
-              } else {
-                setStateDialog(() {
-                  autovalidateMode = AutovalidateMode.always;
-                });
-              }
-            },
-            finish: () {},
           );
         },
       );

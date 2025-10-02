@@ -40,6 +40,7 @@ class FuelScreen extends StatelessWidget {
                         return StatefulBuilder(
                           builder: (context, setStateDialog) {
                             return CustomDialog(
+                              onSave: () {},
                               title: "اضافة تعبئة",
                               subTitle:
                                   "يمكنك الحجم الذي قمت بتعبئته عن طريق نموذج التعبئة التالي",
@@ -79,18 +80,6 @@ class FuelScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              save: () {
-                                if (formKey.currentState!.validate()) {
-                                  formKey.currentState!.save();
-                                } else {
-                                  setStateDialog(() {
-                                    autovalidateMode = AutovalidateMode.always;
-                                  });
-                                }
-                              },
-                              finish: () {
-                                Navigator.pop(context);
-                              },
                             );
                           },
                         );

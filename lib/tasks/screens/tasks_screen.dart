@@ -21,10 +21,11 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  final TasksCubit _tasksCubit = getIt<TasksCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<TasksCubit>()..getUserTasks(userId: 1),
+      create: (context) => _tasksCubit..getUserTasks(userId: 1),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
@@ -45,7 +46,10 @@ class _TasksScreenState extends State<TasksScreen> {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => showAddTaskDialog(context),
+                      onTap: () => showAddTaskDialog(
+                        context,
+                        cubit: _tasksCubit,
+                      ),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -162,11 +166,11 @@ class _TasksList extends StatelessWidget {
           case RequestStatus.success:
             return _buildTasksList(tasks: state.tasks);
           case RequestStatus.error:
-            if(!state.isConnected){
+            if (!state.isConnected) {
               return NoInternetWidget(
                 isLoading: state.tasksState.isLoading,
                 errorMessage: state.taskErrorMessage,
-                onPressed: (){
+                onPressed: () {
                   context.read<TasksCubit>().getUserTasks(userId: 1);
                 },
               );

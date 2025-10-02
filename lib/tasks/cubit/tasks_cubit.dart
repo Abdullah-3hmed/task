@@ -33,4 +33,32 @@ class TasksCubit extends Cubit<TasksState> {
           emit(state.copyWith(tasksState: RequestStatus.success, tasks: tasks)),
     );
   }
+
+  Future<void> addTask({
+    required String name,
+    required String description,
+    required String date,
+  }) async {
+    emit(state.copyWith(addTaskState: RequestStatus.loading));
+    final result = await tasksRepo.addTask(
+      name: name,
+      description: description,
+      date: date,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          addTaskState: RequestStatus.error,
+          taskErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (addTaskResponseModel) => emit(
+        state.copyWith(
+          addTaskState: RequestStatus.success,
+          addTaskResponseModel: addTaskResponseModel,
+          tasks: [...state.tasks, addTaskResponseModel.task],
+        ),
+      ),
+    );
+  }
 }

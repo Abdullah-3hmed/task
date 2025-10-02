@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task/core/widgets/primary_button.dart';
 
 class CustomDialog extends StatelessWidget {
   const CustomDialog({
@@ -6,15 +7,14 @@ class CustomDialog extends StatelessWidget {
     required this.body,
     required this.title,
     required this.subTitle,
-    required this.save,
-    required this.finish,
+    required this.onSave,
   });
 
   final Widget body;
   final String title;
   final String subTitle;
-  final void Function() save;
-  final void Function() finish;
+  final Function() onSave;
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,39 +59,20 @@ class CustomDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: MaterialButton(
-                            height: 50.0,
-                            color: const Color(0xFF292929),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            onPressed: save,
-                            child: const Text(
-                              "حفظ  التغيرات",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFFFFFEFC),
-                              ),
-                            ),
+                          child: PrimaryButton(
+                            text: "حفظ التغيرات",
+                            onPressed: onSave,
                           ),
                         ),
                         Expanded(
-                          child: MaterialButton(
-                            height: 50.0,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(color: Color(0xFF5B8C51)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            onPressed: finish,
-                            child: const Text(
-                              "الغاء",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF5B8C51),
-                              ),
-                            ),
+                          child: PrimaryButton(
+                            text: "الغاء",
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            borderColor: const Color(0xFF5B8C51),
+                            backgroundColor: Colors.white,
+                            textColor: const Color(0xFF5B8C51),
                           ),
                         ),
                       ],

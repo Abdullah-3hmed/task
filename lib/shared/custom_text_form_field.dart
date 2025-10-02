@@ -11,6 +11,9 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputAction,
     this.suffixIcon,
     this.type,
+    this.onTap,
+    this.controller,
+    this.readOnly = false,
   });
 
   final String hintText;
@@ -18,18 +21,26 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String? value)? onSaved;
   final Function(String? value)? onChanged;
   final Function(String? value)? onFieldSubmitted;
+  final VoidCallback? onTap;
   final TextInputAction? textInputAction;
   final Widget? suffixIcon;
   final TextInputType? type;
+  final TextEditingController? controller;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
+      controller: controller,
+      onTap: onTap,
       onSaved: onSaved,
       onChanged: onChanged,
       keyboardType: type,
       onFieldSubmitted: onFieldSubmitted,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+      textAlign: TextAlign.right,
       textInputAction: textInputAction ?? TextInputAction.next,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
