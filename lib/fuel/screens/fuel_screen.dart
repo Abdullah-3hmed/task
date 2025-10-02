@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task/custom_dialog.dart';
-import 'package:task/custom_text_form_field.dart';
-import 'package:task/gas/widgets/gas_list_item.dart';
-import 'package:task/maintenance/widgets/maintenance_list_item.dart';
-import 'package:task/maintenance/widgets/maintenance_dialog.dart';
+import 'package:task/fuel/screens/widgets/fuel_list_item.dart';
+import 'package:task/shared/custom_dialog.dart';
+import 'package:task/shared/custom_text_form_field.dart';
 
-class GasScreen extends StatelessWidget {
-  const GasScreen({super.key});
+class FuelScreen extends StatelessWidget {
+  const FuelScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +125,7 @@ class GasScreen extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => const GasListItem(),
+                  itemBuilder: (context, index) => const FuelListItem(),
                   separatorBuilder: (_, _) => const SizedBox(height: 24.0),
                   itemCount: 10,
                 ),

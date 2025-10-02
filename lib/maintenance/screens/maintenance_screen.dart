@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task/custom_dialog.dart';
-import 'package:task/gas/screens/gas_screen.dart';
-import 'package:task/maintenance/widgets/maintenance_list_item.dart';
-import 'package:task/maintenance/widgets/maintenance_dialog.dart';
+import 'package:task/fuel/screens/fuel_screen.dart';
+import 'package:task/maintenance/screens/widgets/maintenance_dialog.dart';
+import 'package:task/maintenance/screens/widgets/maintenance_list_item.dart';
+import 'package:task/shared/custom_dialog.dart';
 
 class MaintenanceScreen extends StatelessWidget {
   const MaintenanceScreen({super.key});
@@ -17,7 +17,7 @@ class MaintenanceScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const GasScreen()),
+                MaterialPageRoute(builder: (context) => const FuelScreen()),
               );
             },
             icon: const Icon(Icons.add),

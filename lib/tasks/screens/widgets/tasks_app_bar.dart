@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/maintenance/screens/maintenance_screen.dart';
 
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+class TasksAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const TasksAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

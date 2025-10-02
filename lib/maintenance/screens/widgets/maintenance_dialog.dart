@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:task/custom_dialog.dart';
-import 'package:task/custom_text_form_field.dart';
+import 'package:task/shared/custom_dialog.dart';
+import 'package:task/shared/custom_text_form_field.dart';
 
 void showMaintenanceDialog(BuildContext context) {
   final itemsNotifier = ValueNotifier<List<MaintenanceItemModel>>([
