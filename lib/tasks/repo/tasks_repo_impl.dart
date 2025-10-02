@@ -6,6 +6,7 @@ import 'package:task/core/network/dio_helper.dart';
 import 'package:task/core/utils/app_constants.dart';
 import 'package:task/core/utils/safe_api_call.dart';
 import 'package:task/tasks/data/add_task_response_model.dart';
+import 'package:task/tasks/data/start_and_end_task_request_model.dart';
 import 'package:task/tasks/data/task_model.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 
@@ -27,7 +28,7 @@ class TasksRepoImpl implements TasksRepo {
           (response.data["data"] ?? []).map((x) => TaskModel.fromJson(x)),
         );
       } else {
-        throw ServerException(errorMessage: response.data["message"]);
+        throw ServerException(errorMessage: response.data);
       }
     });
   }
@@ -51,7 +52,43 @@ class TasksRepoImpl implements TasksRepo {
       if (response.statusCode == 200) {
         return AddTaskResponseModel.fromJson(response.data);
       } else {
-        throw ServerException(errorMessage: response.data["message"]);
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, String>> startTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    return safeApiCall<String>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.startTaskEndpoint,
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        data: startAndEndTaskRequestModel.toJson(),
+      );
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, String>> endTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    return safeApiCall<String>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.endTaskEndpoint,
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        data: startAndEndTaskRequestModel.toJson(),
+      );
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        throw ServerException(errorMessage: response.data);
       }
     });
   }

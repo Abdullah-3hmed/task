@@ -70,7 +70,7 @@ class _TaskListItemState extends State<TaskListItem> {
                       ),
                       const SizedBox(height: 5.0),
                       Text(
-                        widget.task.startDateTime.split(" ").first,
+                        widget.task.startDateTime,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 8.0,

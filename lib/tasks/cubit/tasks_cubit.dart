@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/tasks/cubit/tasks_state.dart';
+import 'package:task/tasks/data/start_and_end_task_request_model.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 
 class TasksCubit extends Cubit<TasksState> {
@@ -57,6 +58,52 @@ class TasksCubit extends Cubit<TasksState> {
           addTaskState: RequestStatus.success,
           addTaskResponseModel: addTaskResponseModel,
           tasks: [...state.tasks, addTaskResponseModel.task],
+        ),
+      ),
+    );
+  }
+
+  Future<void> startTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    emit(state.copyWith(startTaskState: RequestStatus.loading));
+    final result = await tasksRepo.startTask(
+      startAndEndTaskRequestModel: startAndEndTaskRequestModel,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          startTaskState: RequestStatus.error,
+          taskErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (startTaskMessage) => emit(
+        state.copyWith(
+          startTaskState: RequestStatus.success,
+          startTaskMessage: startTaskMessage,
+        ),
+      ),
+    );
+  }
+
+  Future<void> endTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    emit(state.copyWith(startTaskState: RequestStatus.loading));
+    final result = await tasksRepo.endTask(
+      startAndEndTaskRequestModel: startAndEndTaskRequestModel,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          endTaskState: RequestStatus.error,
+          taskErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (endTaskMessage) => emit(
+        state.copyWith(
+          endTaskState: RequestStatus.success,
+          endTaskMessage: endTaskMessage,
         ),
       ),
     );

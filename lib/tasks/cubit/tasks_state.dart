@@ -6,6 +6,10 @@ import 'package:task/tasks/data/task_model.dart';
 class TasksState extends Equatable {
   final RequestStatus tasksState;
   final RequestStatus addTaskState;
+  final RequestStatus startTaskState;
+  final RequestStatus endTaskState;
+  final String startTaskMessage;
+  final String endTaskMessage;
   final List<TaskModel> tasks;
   final AddTaskResponseModel addTaskResponseModel;
   final String taskErrorMessage;
@@ -17,6 +21,10 @@ class TasksState extends Equatable {
     this.taskErrorMessage = "",
     this.addTaskState = RequestStatus.initial,
     this.addTaskResponseModel = AddTaskResponseModel.empty,
+    this.startTaskState = RequestStatus.initial,
+    this.endTaskState = RequestStatus.initial,
+    this.startTaskMessage = "",
+    this.endTaskMessage = "",
     this.isConnected = true,
   });
 
@@ -26,6 +34,10 @@ class TasksState extends Equatable {
     String? taskErrorMessage,
     RequestStatus? addTaskState,
     AddTaskResponseModel? addTaskResponseModel,
+    RequestStatus? startTaskState,
+    RequestStatus? endTaskState,
+    String? startTaskMessage,
+    String? endTaskMessage,
     bool? isConnected,
   }) {
     return TasksState(
@@ -34,6 +46,10 @@ class TasksState extends Equatable {
       taskErrorMessage: taskErrorMessage ?? this.taskErrorMessage,
       addTaskState: addTaskState ?? this.addTaskState,
       addTaskResponseModel: addTaskResponseModel ?? this.addTaskResponseModel,
+      startTaskState: startTaskState ?? this.startTaskState,
+      endTaskState: endTaskState ?? this.endTaskState,
+      startTaskMessage: startTaskMessage ?? this.startTaskMessage,
+      endTaskMessage: endTaskMessage ?? this.endTaskMessage,
       isConnected: isConnected ?? this.isConnected,
     );
   }
@@ -45,6 +61,10 @@ class TasksState extends Equatable {
     taskErrorMessage,
     addTaskState,
     addTaskResponseModel,
+    startTaskState,
+    endTaskState,
+    startTaskMessage,
+    endTaskMessage,
     isConnected,
   ];
 }
