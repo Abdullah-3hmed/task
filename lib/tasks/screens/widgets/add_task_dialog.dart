@@ -7,6 +7,7 @@ import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/shared/custom_text_form_field.dart';
 import 'package:task/tasks/cubit/tasks_cubit.dart';
 import 'package:task/tasks/cubit/tasks_state.dart';
+import 'package:task/tasks/data/add_task_request_model.dart';
 
 void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -168,10 +169,10 @@ void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
                                 if (state.addTaskState.isSuccess) {
                                   showToast(
                                     context: context,
-                                    message:
-                                        state.addTaskResponseModel.message,
+                                    message: state.addTaskResponseModel.message,
                                     state: ToastStates.success,
                                   );
+                                  Navigator.pop(context);
                                 }
                               },
                               buildWhen: (prev, curr) =>
@@ -184,10 +185,16 @@ void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
                                     onPressed: () {
                                       if (formKey.currentState!.validate()) {
                                         formKey.currentState!.save();
+                                        AddTaskRequestModel
+                                        addTaskRequestModel =
+                                            AddTaskRequestModel(
+                                              name: name,
+                                              description: description,
+                                              date: dateController.text,
+                                            );
                                         cubit.addTask(
-                                          name: name,
-                                          description: description,
-                                          date: dateController.text,
+                                          addTaskRequestModel:
+                                              addTaskRequestModel,
                                         );
                                       } else {
                                         setStateDialog(() {

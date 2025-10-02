@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:task/core/network/dio_helper.dart';
+import 'package:task/maintenance/cubit/maintenance_cubit.dart';
+import 'package:task/maintenance/repo/maintenance_repo.dart';
+import 'package:task/maintenance/repo/maintenance_repo_impl.dart';
 import 'package:task/tasks/cubit/tasks_cubit.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 import 'package:task/tasks/repo/tasks_repo_impl.dart';
@@ -12,6 +15,14 @@ class ServiceLocator {
     getIt.registerLazySingleton<TasksRepo>(
       () => TasksRepoImpl(dioHelper: getIt.get<DioHelper>()),
     );
-    getIt.registerFactory<TasksCubit>(()=>TasksCubit(tasksRepo: getIt.get<TasksRepo>()));
+    getIt.registerFactory<TasksCubit>(
+      () => TasksCubit(tasksRepo: getIt.get<TasksRepo>()),
+    );
+    getIt.registerLazySingleton<MaintenanceRepo>(
+      () => MaintenanceRepoImpl(dioHelper: getIt.get<DioHelper>()),
+    );
+    getIt.registerFactory<MaintenanceCubit>(
+      () => MaintenanceCubit(maintenanceRepo: getIt.get<MaintenanceRepo>()),
+    );
   }
 }

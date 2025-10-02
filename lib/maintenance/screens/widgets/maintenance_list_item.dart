@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task/maintenance/data/maintenance_model.dart';
 
 class MaintenanceListItem extends StatefulWidget {
-  const MaintenanceListItem({super.key});
+  const MaintenanceListItem({super.key, required this.maintenanceModel});
+
+  final MaintenanceModel maintenanceModel;
 
   @override
   State<MaintenanceListItem> createState() => _MaintenanceListItemState();
@@ -55,19 +58,19 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "عنوان 1",
-                        style: TextStyle(
+                      Text(
+                        widget.maintenanceModel.name,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 14.0,
                         ),
                       ),
                       const SizedBox(height: 5.0),
                       Text(
-                        "25/9/2025",
+                        widget.maintenanceModel.carSpart,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 8.0,
+                          fontSize: 14.0,
                           color: Colors.black.withValues(alpha: 37),
                         ),
                       ),
@@ -75,36 +78,43 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       ValueListenableBuilder<bool>(
                         valueListenable: _isExpanded,
                         builder: (context, isExpanded, _) {
-                          if (!isExpanded) return const SizedBox.shrink();
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "تم صيانة الاتي : ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.0,
-                                ),
-                              ),
-                              const SizedBox(height: 18.0),
-                              CustomScrollView(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                slivers: [
-                                  SliverList(
-                                    delegate: SliverChildBuilderDelegate(
-                                      (context, index) => Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 10.0,
-                                        ),
-                                        child: _buildMaintenanceItem(),
-                                      ),
-                                      childCount: 3,
-                                    ),
+                         return AnimatedSize(
+                           curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300,),
+                            child: isExpanded ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "تم صيانة الاتي : ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.0,
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                                const SizedBox(height: 18.0),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.only(
+                                    start: 18.0,
+                                  ),
+                                  child: Row(
+                                    spacing: 5.0,
+                                    children: [
+                                      const CircleAvatar(
+                                        radius: 1,
+                                        backgroundColor: Colors.black,
+                                      ),
+                                      Text(
+                                        widget.maintenanceModel.description,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ) : const SizedBox.shrink(),
                           );
                         },
                       ),
@@ -131,18 +141,4 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
       ],
     );
   }
-
-  Padding _buildMaintenanceItem() => const Padding(
-    padding: EdgeInsetsDirectional.only(start: 18.0),
-    child: Row(
-      spacing: 5.0,
-      children: [
-        CircleAvatar(radius: 1, backgroundColor: Colors.black),
-        Text(
-          "تغيير كاوتش ",
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0),
-        ),
-      ],
-    ),
-  );
 }

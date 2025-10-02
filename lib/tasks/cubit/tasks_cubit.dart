@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/tasks/cubit/tasks_state.dart';
+import 'package:task/tasks/data/add_task_request_model.dart';
 import 'package:task/tasks/data/start_and_end_task_request_model.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 
@@ -36,15 +37,11 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
   Future<void> addTask({
-    required String name,
-    required String description,
-    required String date,
+    required AddTaskRequestModel addTaskRequestModel,
   }) async {
     emit(state.copyWith(addTaskState: RequestStatus.loading));
     final result = await tasksRepo.addTask(
-      name: name,
-      description: description,
-      date: date,
+      addTaskRequestModel: addTaskRequestModel,
     );
     result.fold(
       (failure) => emit(
