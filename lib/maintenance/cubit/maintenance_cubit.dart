@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/maintenance/cubit/maintenance_state.dart';
+import 'package:task/maintenance/data/add_maintenance_request_model.dart';
 import 'package:task/maintenance/repo/maintenance_repo.dart';
 
 class MaintenanceCubit extends Cubit<MaintenanceState> {
@@ -39,6 +40,51 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
         state.copyWith(
           maintenanceState: RequestStatus.success,
           maintenances: maintenances,
+        ),
+      ),
+    );
+  }
+
+  Future<void> getSpareParts() async {
+    final result = await maintenanceRepo.getSpareParts();
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          getSparePartsState: RequestStatus.error,
+          maintenanceErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (spareParts) => emit(
+        state.copyWith(
+          getSparePartsState: RequestStatus.success,
+          spareParts: spareParts,
+        ),
+      ),
+    );
+  }
+
+  Future<void> addMaintenance({
+    required AddMaintenanceRequestModel addMaintenanceRequestModel,
+  }) async {
+    emit(state.copyWith(addMaintenanceState: RequestStatus.loading));
+    final result = await maintenanceRepo.addMaintenance(
+      addMaintenanceRequestModel: addMaintenanceRequestModel,
+    );
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          addMaintenanceState: RequestStatus.error,
+          maintenanceErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (addMaintenanceResponseModel) => emit(
+        state.copyWith(
+          addMaintenanceState: RequestStatus.success,
+          maintenances: [
+            ...state.maintenances,
+            addMaintenanceResponseModel.maintenanceModel,
+          ],
         ),
       ),
     );

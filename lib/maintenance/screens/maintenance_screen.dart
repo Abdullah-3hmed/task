@@ -15,7 +15,7 @@ class MaintenanceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final MaintenanceCubit maintenanceCubit = getIt<MaintenanceCubit>();
     return BlocProvider.value(
-      value: maintenanceCubit..getUserMaintenances(),
+      value: maintenanceCubit..getUserMaintenances()..getSpareParts(),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
@@ -46,7 +46,10 @@ class MaintenanceScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => showMaintenanceDialog(context),
+                      onTap: () => showMaintenanceDialog(
+                        context,
+                        maintenanceCubit: maintenanceCubit,
+                      ),
                       child: Row(
                         children: [
                           CircleAvatar(

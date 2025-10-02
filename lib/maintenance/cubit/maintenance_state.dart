@@ -1,11 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/maintenance/data/maintenance_model.dart';
+import 'package:task/maintenance/data/spare_parts_model.dart';
 
 class MaintenanceState extends Equatable {
   final RequestStatus maintenanceState;
+  final RequestStatus getSparePartsState;
+  final RequestStatus addMaintenanceState;
+  final String addMaintenanceMessage;
   final String maintenanceErrorMessage;
   final List<MaintenanceModel> maintenances;
+  final List<SparePartsModel> spareParts;
   final bool isConnected;
 
 
@@ -13,6 +18,10 @@ class MaintenanceState extends Equatable {
     this.maintenanceState = RequestStatus.initial,
     this.maintenanceErrorMessage = "",
     this.maintenances = const [],
+    this.spareParts = const [],
+    this.getSparePartsState = RequestStatus.loading,
+    this.addMaintenanceState = RequestStatus.initial,
+    this.addMaintenanceMessage = "",
     this.isConnected = true,
   });
 
@@ -20,12 +29,20 @@ class MaintenanceState extends Equatable {
     RequestStatus? maintenanceState,
     String? maintenanceErrorMessage,
     List<MaintenanceModel>? maintenances,
+    List<SparePartsModel>? spareParts,
+    RequestStatus? getSparePartsState,
+    RequestStatus? addMaintenanceState,
+    String? addMaintenanceMessage,
     bool? isConnected,
   }) => MaintenanceState(
     maintenanceState: maintenanceState ?? this.maintenanceState,
     maintenanceErrorMessage:
         maintenanceErrorMessage ?? this.maintenanceErrorMessage,
     maintenances: maintenances ?? this.maintenances,
+    spareParts: spareParts ?? this.spareParts,
+    getSparePartsState: getSparePartsState ?? this.getSparePartsState,
+    addMaintenanceState: addMaintenanceState ?? this.addMaintenanceState,
+    addMaintenanceMessage: addMaintenanceMessage ?? this.addMaintenanceMessage,
     isConnected: isConnected ?? this.isConnected,
   );
 
@@ -34,6 +51,10 @@ class MaintenanceState extends Equatable {
     maintenanceState,
     maintenanceErrorMessage,
     maintenances,
+    spareParts,
+    getSparePartsState,
+    addMaintenanceState,
+    addMaintenanceMessage,
     isConnected,
   ];
 }

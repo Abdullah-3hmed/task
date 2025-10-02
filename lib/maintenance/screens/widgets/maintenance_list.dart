@@ -52,6 +52,7 @@ class MaintenanceList extends StatelessWidget {
               return NoInternetWidget(
                 onPressed: () {
                   context.read<MaintenanceCubit>().getUserMaintenances();
+                  context.read<MaintenanceCubit>().getSpareParts();
                 },
                 errorMessage: state.maintenanceErrorMessage,
               );
