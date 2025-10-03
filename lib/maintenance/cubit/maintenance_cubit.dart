@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/maintenance/cubit/maintenance_state.dart';
+import 'package:task/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/maintenance/data/add_maintenance_request_model.dart';
 import 'package:task/maintenance/repo/maintenance_repo.dart';
 
@@ -40,6 +41,7 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
         state.copyWith(
           maintenanceState: RequestStatus.success,
           maintenances: maintenances,
+          maintenanceItems: [AddMaintenanceItemModel()],
         ),
       ),
     );
@@ -88,5 +90,34 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
         ),
       ),
     );
+  }
+
+  void updateName(String name) {
+    emit(state.copyWith(maintenanceName: name));
+  }
+
+  void addMaintenanceItem() {
+    emit(
+      state.copyWith(
+        maintenanceItems: [
+          ...state.maintenanceItems,
+          AddMaintenanceItemModel(),
+        ],
+      ),
+    );
+  }
+
+  void removeMaintenanceItem(int index) {
+    final newItems = [...state.maintenanceItems]..removeAt(index);
+    emit(state.copyWith(maintenanceItems: newItems));
+  }
+
+  void updateMaintenanceItems(
+    int index,
+    AddMaintenanceItemModel maintenanceItem,
+  ) {
+    final newItems = [...state.maintenanceItems];
+    newItems[index] = maintenanceItem;
+    emit(state.copyWith(maintenanceItems: newItems));
   }
 }

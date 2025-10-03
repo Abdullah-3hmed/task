@@ -18,6 +18,7 @@ class TasksList extends StatelessWidget {
     description: "************",
     startDateTime: "******",
     endDateTime: "******",
+    status: "******",
   );
 
   @override

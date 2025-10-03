@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:task/bloc_observer.dart';
+import 'package:task/core/services/service_locator.dart';
 import 'package:task/core/utils/app_constants.dart';
-import 'package:task/services/service_locator.dart';
 import 'package:task/tasks/screens/tasks_screen.dart';
 
 void main() {

@@ -20,6 +20,7 @@ class AddTaskResponseModel extends Equatable {
       description: "",
       startDateTime: "",
       endDateTime: "",
+      status: "",
     ),
   );
 

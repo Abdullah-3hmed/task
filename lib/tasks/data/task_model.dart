@@ -6,6 +6,7 @@ class TaskModel extends Equatable {
   final String description;
   final String startDateTime;
   final String endDateTime;
+  final String status;
 
   const TaskModel({
     required this.id,
@@ -13,6 +14,7 @@ class TaskModel extends Equatable {
     required this.description,
     required this.startDateTime,
     required this.endDateTime,
+    required this.status,
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
@@ -21,8 +23,9 @@ class TaskModel extends Equatable {
     description: json['description'] ?? "",
     startDateTime: json['start_date_time'] ?? "",
     endDateTime: json['end_date_time'] ?? "",
+    status: json['status'] ?? "",
   );
 
   @override
-  List<Object> get props => [id, name, description, startDateTime, endDateTime];
+  List<Object> get props => [id, name, description, startDateTime, endDateTime, status];
 }

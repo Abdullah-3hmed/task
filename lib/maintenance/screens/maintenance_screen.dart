@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task/core/services/service_locator.dart';
 import 'package:task/fuel/screens/fuel_screen.dart';
 import 'package:task/maintenance/cubit/maintenance_cubit.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_dialog.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_list.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_list_item.dart';
-import 'package:task/services/service_locator.dart';
 import 'package:task/shared/custom_dialog.dart';
 
 class MaintenanceScreen extends StatelessWidget {

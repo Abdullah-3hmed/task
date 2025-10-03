@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/maintenance/data/maintenance_model.dart';
 import 'package:task/maintenance/data/spare_parts_model.dart';
 
@@ -11,6 +12,9 @@ class MaintenanceState extends Equatable {
   final String maintenanceErrorMessage;
   final List<MaintenanceModel> maintenances;
   final List<SparePartsModel> spareParts;
+  final String maintenanceName;
+  final List<AddMaintenanceItemModel> maintenanceItems;
+
   final bool isConnected;
 
 
@@ -22,6 +26,8 @@ class MaintenanceState extends Equatable {
     this.getSparePartsState = RequestStatus.loading,
     this.addMaintenanceState = RequestStatus.initial,
     this.addMaintenanceMessage = "",
+    this.maintenanceName = "",
+    this.maintenanceItems = const [],
     this.isConnected = true,
   });
 
@@ -33,6 +39,8 @@ class MaintenanceState extends Equatable {
     RequestStatus? getSparePartsState,
     RequestStatus? addMaintenanceState,
     String? addMaintenanceMessage,
+    String? maintenanceName,
+    List<AddMaintenanceItemModel>? maintenanceItems,
     bool? isConnected,
   }) => MaintenanceState(
     maintenanceState: maintenanceState ?? this.maintenanceState,
@@ -43,6 +51,8 @@ class MaintenanceState extends Equatable {
     getSparePartsState: getSparePartsState ?? this.getSparePartsState,
     addMaintenanceState: addMaintenanceState ?? this.addMaintenanceState,
     addMaintenanceMessage: addMaintenanceMessage ?? this.addMaintenanceMessage,
+    maintenanceName: maintenanceName ?? this.maintenanceName,
+    maintenanceItems: maintenanceItems ?? this.maintenanceItems,
     isConnected: isConnected ?? this.isConnected,
   );
 
@@ -55,6 +65,8 @@ class MaintenanceState extends Equatable {
     getSparePartsState,
     addMaintenanceState,
     addMaintenanceMessage,
+    maintenanceName,
+    maintenanceItems,
     isConnected,
   ];
 }

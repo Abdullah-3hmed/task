@@ -1,31 +1,32 @@
-class AddMaintenanceRequestModel {
-  final List<MaintenanceItem> items;
+import 'package:equatable/equatable.dart';
 
-  AddMaintenanceRequestModel({required this.items});
+class AddMaintenanceRequestModel extends Equatable {
+  final String name;
+  final List<MaintenanceItemModel> items;
+
+  const AddMaintenanceRequestModel({required this.items, required this.name});
 
   Map<String, dynamic> toJson() {
-    return {
-      "items": items.map((e) => e.toJson()).toList(),
-    };
+    return {"name": name, "items": items.map((e) => e.toJson()).toList()};
   }
+
+  @override
+  List<Object> get props => [name, items];
 }
 
-class MaintenanceItem {
-  final String name;
+class MaintenanceItemModel extends Equatable {
   final int carSparePartId;
   final String description;
 
-  MaintenanceItem({
-    required this.name,
+  const MaintenanceItemModel({
     required this.carSparePartId,
     required this.description,
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "car_spart_id": carSparePartId,
-      "description": description,
-    };
+    return {"car_spart_id": carSparePartId, "description": description};
   }
+
+  @override
+  List<Object> get props => [carSparePartId, description];
 }
