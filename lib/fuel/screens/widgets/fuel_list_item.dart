@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task/fuel/data/fuel_model.dart';
 
 class FuelListItem extends StatelessWidget {
-  const FuelListItem({super.key});
+  const FuelListItem({super.key, required this.fuelModel});
+
+  final FuelModel fuelModel;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +38,21 @@ class FuelListItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12.0),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "25/9/2025",
-                    style: TextStyle(
+                    fuelModel.date,
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 12.0,
                     ),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   Text(
-                    "تمت تعبئة : 50 لتر",
-                    style: TextStyle(
+                    "تمت تعبئة : ${fuelModel.name} لتر",
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.0,
                     ),
