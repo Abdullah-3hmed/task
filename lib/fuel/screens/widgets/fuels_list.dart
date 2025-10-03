@@ -14,7 +14,7 @@ class FuelsList extends StatelessWidget {
 
   static List<FuelModel> dummyFuels = List<FuelModel>.generate(
     5,
-    (context) => const FuelModel(id: 0, name: '**********', date: '********'),
+    (context) => const FuelModel(id: 0, name: 0.0, date: '********'),
   );
 
   @override
@@ -35,9 +35,7 @@ class FuelsList extends StatelessWidget {
       builder: (context, state) {
         switch (state.getFuelState) {
           case RequestStatus.loading:
-            return Skeletonizer(child: _buildFuelList(
-               fuels: dummyFuels
-            ));
+            return Skeletonizer(child: _buildFuelList(fuels: dummyFuels));
           case RequestStatus.success:
             return _buildFuelList(fuels: state.fuels);
           case RequestStatus.error:

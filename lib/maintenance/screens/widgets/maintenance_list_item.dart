@@ -67,10 +67,10 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       ),
                       const SizedBox(height: 5.0),
                       Text(
-                        widget.maintenanceModel.carSpart,
+                        widget.maintenanceModel.date,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 14.0,
+                          fontSize: 10.0,
                           color: Colors.black.withValues(alpha: 37),
                         ),
                       ),
@@ -78,43 +78,64 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       ValueListenableBuilder<bool>(
                         valueListenable: _isExpanded,
                         builder: (context, isExpanded, _) {
-                         return AnimatedSize(
-                           curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300,),
-                            child: isExpanded ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "تم صيانة الاتي : ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                                const SizedBox(height: 18.0),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                    start: 18.0,
-                                  ),
-                                  child: Row(
-                                    spacing: 5.0,
+                          return AnimatedSize(
+                            curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300),
+                            child: isExpanded
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      const CircleAvatar(
-                                        radius: 1,
-                                        backgroundColor: Colors.black,
-                                      ),
-                                      Text(
-                                        widget.maintenanceModel.description,
-                                        style: const TextStyle(
+                                      const Text(
+                                        "تم صيانة الاتي : ",
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0,
                                         ),
                                       ),
+                                      const SizedBox(height: 18.0),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) => Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.only(
+                                                start: 18.0,
+                                              ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                "• ",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  widget
+                                                      .maintenanceModel
+                                                      .items[index]
+                                                      .description,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        itemCount: widget
+                                            .maintenanceModel
+                                            .items
+                                            .length,
+                                      ),
                                     ],
-                                  ),
-                                ),
-                              ],
-                            ) : const SizedBox.shrink(),
+                                  )
+                                : const SizedBox.shrink(),
                           );
                         },
                       ),

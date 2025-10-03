@@ -72,6 +72,7 @@ void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 5.0,),
                             CustomTextFormField(
                               hintText: "عنوان المهمة",
                               onSaved: (value) {
@@ -89,6 +90,7 @@ void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 5.0,),
                             CustomTextFormField(
                               controller: dateController,
                               readOnly: true,
@@ -127,6 +129,7 @@ void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 16.0,),
                             CustomTextFormField(
                               hintText: "تفاصيل المهمة",
                               onSaved: (value) {

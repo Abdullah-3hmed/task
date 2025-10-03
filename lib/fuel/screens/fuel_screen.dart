@@ -5,12 +5,13 @@ import 'package:task/core/enums/request_status.dart';
 import 'package:task/core/services/service_locator.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/no_internet_widget.dart';
+import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/fuel/cubit/fuel_cubit.dart';
 import 'package:task/fuel/cubit/fuel_state.dart';
 import 'package:task/fuel/data/fuel_model.dart';
+import 'package:task/fuel/screens/widgets/fuel_dialog.dart';
 import 'package:task/fuel/screens/widgets/fuel_list_item.dart';
 import 'package:task/fuel/screens/widgets/fuels_list.dart';
-import 'package:task/shared/custom_dialog.dart';
 import 'package:task/shared/custom_text_form_field.dart';
 
 class FuelScreen extends StatelessWidget {
@@ -44,60 +45,7 @@ class FuelScreen extends StatelessWidget {
                     InkWell(
                       onTap: () => showDialog(
                         context: context,
-                        builder: (context) {
-                          final GlobalKey<FormState> formKey =
-                              GlobalKey<FormState>();
-                          AutovalidateMode autovalidateMode =
-                              AutovalidateMode.disabled;
-
-                          return StatefulBuilder(
-                            builder: (context, setStateDialog) {
-                              return CustomDialog(
-                                onSave: () {},
-                                title: "اضافة تعبئة",
-                                subTitle:
-                                    "يمكنك الحجم الذي قمت بتعبئته عن طريق نموذج التعبئة التالي",
-                                body: Form(
-                                  key: formKey,
-                                  autovalidateMode: autovalidateMode,
-                                  child: const Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 20.0),
-                                      Text(
-                                        "الحجم",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12.0,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10.0),
-                                      CustomTextFormField(
-                                        hintText: "الحجم",
-                                        textInputAction: TextInputAction.done,
-                                        type: TextInputType.number,
-                                        suffixIcon: SizedBox(
-                                          width: 40,
-                                          child: Center(
-                                            child: Text(
-                                              "لتر",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14.0,
-                                                color: Colors.black87,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                        builder: (context) => FuelDialog(fuelCubit: fuelCubit),
                       ),
                       child: Row(
                         children: [

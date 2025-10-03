@@ -14,19 +14,35 @@ class FuelRepoImpl implements FuelRepo {
   FuelRepoImpl({required this.dioHelper});
 
   @override
-  Future<Either<Failure, List<FuelModel>>> getFuels() async{
-   return safeApiCall(()async{
-     final response = await dioHelper.get(
-       url: ApiConstants.getUserFuelsEndPoint,
-       headers: {"Authorization": "Bearer ${AppConstants.token}"},
-     );
-     if(response.statusCode == 200){
-       return List<FuelModel>.from(
-         (response.data["data"] ?? []).map((x) => FuelModel.fromJson(x)),
-       );
-     }else{
-       throw ServerException(errorMessage: response.data);
-     }
-   });
+  Future<Either<Failure, List<FuelModel>>> getFuels() async {
+    return safeApiCall(() async {
+      final response = await dioHelper.get(
+        url: ApiConstants.getUserFuelsEndPoint,
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      );
+      if (response.statusCode == 200) {
+        return List<FuelModel>.from(
+          (response.data["data"] ?? []).map((x) => FuelModel.fromJson(x)),
+        );
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
   }
+
+  @override
+  Future<Either<Failure, FuelModel>> addFuel({
+    required double numberOfLiters,
+  }) async => safeApiCall(() async {
+    final response = await dioHelper.post(
+      url: ApiConstants.addFuelEndPoint,
+      headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      data: {"name": numberOfLiters},
+    );
+    if (response.statusCode == 200) {
+      return FuelModel.fromJson(response.data["data"]);
+    } else {
+      throw ServerException(errorMessage: response.data);
+    }
+  });
 }

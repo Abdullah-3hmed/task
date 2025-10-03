@@ -77,7 +77,7 @@ class _MaintenanceDialogState extends State<MaintenanceDialog> {
                             const SizedBox(height: 5.0),
                             CustomTextFormField(
                               hintText: "عنوان",
-                              onChanged: (value) {
+                              onSaved: (value) {
                                 context.read<MaintenanceCubit>().updateName(value!);
                               },
                             ),

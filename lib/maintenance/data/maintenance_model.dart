@@ -3,27 +3,42 @@ import 'package:equatable/equatable.dart';
 class MaintenanceModel extends Equatable {
   final int id;
   final String name;
-  final String description;
-  final String car;
-  final String carSpart;
+  final String date;
+  final List<MaintenanceItemModel> items;
 
   const MaintenanceModel({
     required this.id,
     required this.name,
-    required this.description,
-    required this.car,
-    required this.carSpart,
+    required this.date,
+    required this.items,
   });
 
   factory MaintenanceModel.fromJson(Map<String, dynamic> json) =>
       MaintenanceModel(
         id: json["id"] ?? 0,
         name: json["name"] ?? "",
-        description: json["description"] ?? "",
-        car: json["car"] ?? "",
-        carSpart: json["car_spart"] ?? "",
+        date: json["date"] ?? "",
+        items: (json["items"] as List<dynamic>? ?? [])
+            .map((item) => MaintenanceItemModel.fromJson(item))
+            .toList(),
       );
 
   @override
-  List<Object> get props => [id, name, description, car, carSpart];
+  List<Object> get props => [id, name];
+}
+
+class MaintenanceItemModel extends Equatable {
+  final int id;
+  final String description;
+
+  const MaintenanceItemModel({required this.id, required this.description});
+
+  factory MaintenanceItemModel.fromJson(Map<String, dynamic> json) =>
+      MaintenanceItemModel(
+        id: json["id"] ?? 0,
+        description: json["description"] ?? "",
+      );
+
+  @override
+  List<Object> get props => [id, description];
 }

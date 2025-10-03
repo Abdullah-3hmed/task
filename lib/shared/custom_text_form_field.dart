@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -14,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onTap,
     this.controller,
     this.readOnly = false,
+    this.inputFormatters,
   });
 
   final String hintText;
@@ -27,11 +29,13 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? type;
   final TextEditingController? controller;
   final bool readOnly;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
+      inputFormatters: inputFormatters,
       controller: controller,
       onTap: onTap,
       onSaved: onSaved,

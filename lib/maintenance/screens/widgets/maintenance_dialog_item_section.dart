@@ -24,16 +24,15 @@ class MaintenanceDialogItemSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BlocBuilder<MaintenanceCubit, MaintenanceState>(
-          buildWhen: (prev, curr) => prev.maintenanceItems != curr.maintenanceItems,
+          buildWhen: (prev, curr) =>
+              prev.maintenanceItems != curr.maintenanceItems,
           builder: (context, state) {
             return ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               cacheExtent: 200,
-              itemBuilder: (context, index) => ItemFields(
-                item: state.maintenanceItems[index],
-                index: index,
-              ),
+              itemBuilder: (context, index) =>
+                  ItemFields(item: state.maintenanceItems[index], index: index),
               itemCount: state.maintenanceItems.length,
             );
           },
@@ -110,18 +109,8 @@ class _SaveButton extends StatelessWidget {
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                final request = AddMaintenanceRequestModel(
-                  name: state.maintenanceName,
-                  items: state.maintenanceItems.map((item) {
-                    return MaintenanceItemModel(
-                      carSparePartId: item.carSpartId ?? 0,
-                      description: item.description,
-                    );
-                  }).toList(),
-                );
-                context.read<MaintenanceCubit>().addMaintenance(
-                  addMaintenanceRequestModel: request,
-                );
+
+                context.read<MaintenanceCubit>().addMaintenance();
               } else {
                 autovalidateMode.value = AutovalidateMode.always;
               }

@@ -37,4 +37,23 @@ class FuelCubit extends Cubit<FuelState> {
       ),
     );
   }
+
+  Future<void> addFuel({required double numberOfLiters}) async {
+    emit(state.copyWith(addFuelState: RequestStatus.loading));
+    final result = await fuelRepo.addFuel(numberOfLiters: numberOfLiters);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          addFuelState: RequestStatus.error,
+          fuelErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (fuelModel) => emit(
+        state.copyWith(
+          addFuelState: RequestStatus.success,
+          fuels: [...state.fuels, fuelModel],
+        ),
+      ),
+    );
+  }
 }

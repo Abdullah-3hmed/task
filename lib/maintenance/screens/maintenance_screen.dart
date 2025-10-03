@@ -6,7 +6,6 @@ import 'package:task/maintenance/cubit/maintenance_cubit.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_dialog.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_list.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_list_item.dart';
-import 'package:task/shared/custom_dialog.dart';
 
 class MaintenanceScreen extends StatelessWidget {
   const MaintenanceScreen({super.key});

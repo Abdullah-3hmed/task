@@ -65,10 +65,18 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
     );
   }
 
-  Future<void> addMaintenance({
-    required AddMaintenanceRequestModel addMaintenanceRequestModel,
-  }) async {
+  Future<void> addMaintenance() async {
     emit(state.copyWith(addMaintenanceState: RequestStatus.loading));
+    final AddMaintenanceRequestModel addMaintenanceRequestModel =
+        AddMaintenanceRequestModel(
+          name: state.maintenanceName,
+          items: state.maintenanceItems.map((item) {
+            return MaintenanceItemModel(
+              carSparePartId: item.carSpartId ?? 0,
+              description: item.description,
+            );
+          }).toList(),
+        );
     final result = await maintenanceRepo.addMaintenance(
       addMaintenanceRequestModel: addMaintenanceRequestModel,
     );
@@ -83,6 +91,7 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
       (addMaintenanceResponseModel) => emit(
         state.copyWith(
           addMaintenanceState: RequestStatus.success,
+          addMaintenanceMessage: addMaintenanceResponseModel.message,
           maintenances: [
             ...state.maintenances,
             addMaintenanceResponseModel.maintenanceModel,

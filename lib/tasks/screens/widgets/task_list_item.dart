@@ -62,7 +62,7 @@ class _TaskListItemState extends State<TaskListItem> {
                       Text(
                         widget.task.name,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                           fontFamily: AppConstants.fontCairo,
                           fontSize: 14.0,
                           color: Color(0xFF303A42),
@@ -73,7 +73,7 @@ class _TaskListItemState extends State<TaskListItem> {
                         widget.task.startDateTime.split(" ").first,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 8.0,
+                          fontSize: 10.0,
                           color: Colors.black.withValues(alpha: 37),
                         ),
                       ),

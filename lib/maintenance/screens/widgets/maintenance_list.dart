@@ -17,9 +17,8 @@ class MaintenanceList extends StatelessWidget {
         5,
         (context) => const MaintenanceModel(
           id: 0,
-          car: "********",
-          carSpart: "*******",
-          description: "*****",
+          date: "********",
+          items: [],
           name: "******",
         ),
       );
@@ -38,7 +37,7 @@ class MaintenanceList extends StatelessWidget {
           );
         }
       },
-      buildWhen: (prev, curr) => prev.maintenanceState != curr.maintenanceState,
+      buildWhen: (prev, curr) => prev.maintenanceState != curr.maintenanceState || prev.maintenances != curr.maintenances,
       builder: (context, state) {
         switch (state.maintenanceState) {
           case RequestStatus.loading:

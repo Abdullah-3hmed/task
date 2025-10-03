@@ -26,7 +26,7 @@ class ItemFields extends StatelessWidget {
         const _Label("القطع"),
         const SizedBox(height: 5.0),
         DropdownButtonFormField<String>(
-          icon: const Icon(CupertinoIcons.chevron_down, size: 18.0, color: Colors.black54),
+          icon: const Icon(CupertinoIcons.chevron_down, size: 16.0, color: Colors.black54),
           decoration: _dropdownDecoration,
           dropdownColor: Colors.white,
           items: context.select<MaintenanceCubit, List<SparePartsModel>>(
@@ -46,7 +46,7 @@ class ItemFields extends StatelessWidget {
         ),
         const SizedBox(height: 20.0),
         const _Label("تفاصيل"),
-        const SizedBox(height: 5.0),
+        const SizedBox(height: 16.0),
         CustomTextFormField(
           maxLines: 3,
           hintText: "تفاصيل",
