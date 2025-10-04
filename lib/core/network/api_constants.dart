@@ -5,6 +5,7 @@ class ApiConstants {
   static const String startTaskEndpoint = "start-task";
   static const String endTaskEndpoint = "end-task";
   static const String editTaskEndPoint = "edit-task";
+  static const String requestEditDeleteTaskEndPoint = "request-edit-delete-task";
   ///maintenance
   static const String getUserMaintenancesEndPoint = "get-user-maintenances";
   static const String getSparePartsEndPoint = "settings";

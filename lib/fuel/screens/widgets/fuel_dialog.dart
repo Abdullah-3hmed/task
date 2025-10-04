@@ -6,7 +6,7 @@ import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/fuel/cubit/fuel_cubit.dart';
 import 'package:task/fuel/cubit/fuel_state.dart';
-import 'package:task/shared/custom_text_form_field.dart';
+import 'package:task/core/widgets/custom_text_form_field.dart';
 
 class FuelDialog extends StatefulWidget {
   const FuelDialog({super.key, required this.fuelCubit});

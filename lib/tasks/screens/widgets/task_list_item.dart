@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task/core/enums/request_edit_delete_enum.dart';
 import 'package:task/core/utils/app_constants.dart';
 import 'package:task/core/widgets/custom_dialog.dart';
 import 'package:task/core/widgets/custom_dismissible.dart';
 import 'package:task/core/widgets/primary_button.dart';
+import 'package:task/shared/app_cubit/app_cubit.dart';
 import 'package:task/tasks/cubit/tasks_cubit.dart';
 import 'package:task/tasks/data/task_model.dart';
 import 'package:task/tasks/screens/widgets/edit_task_dialog.dart';
@@ -37,6 +39,12 @@ class _TaskListItemState extends State<TaskListItem> {
           "للتعديل على هذه المهمة تحتاج إلى إذن من إدارة التطبيق . هل ترغب فى ذلك؟",
       canDelete: widget.task.canDelete,
       canEdit: widget.task.canEdit,
+      onRequestEdit: ()async{
+        await context.read<AppCubit>().requestEditDelete(
+          id: widget.task.id,
+          requestEditDelete: RequestEditDeleteEnum.edit,
+        );
+      },
       onDelete: (){
         print("deleted");
       },

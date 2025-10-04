@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
+import 'package:task/shared/app_cubit/app_cubit.dart';
+import 'package:task/shared/app_cubit/app_state.dart';
 
-class CustomDialog extends StatelessWidget {
+class CustomDialog<C extends Cubit<S>, S> extends StatelessWidget {
   final String message;
   final VoidCallback onConfirm;
-  final bool isLoading;
 
   const CustomDialog({
     super.key,
     required this.message,
     required this.onConfirm,
-    required this.isLoading,
   });
 
   @override
@@ -41,7 +44,7 @@ class CustomDialog extends StatelessWidget {
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 12.0),
@@ -65,12 +68,38 @@ class CustomDialog extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: PrimaryButton(
-                        isLoading: isLoading,
-                        text: "تأكيد",
-                        onPressed: (){
-                           onConfirm();
-                          Navigator.pop(context, true);
+                      child: BlocConsumer<AppCubit, AppState>(
+                        listenWhen: (prev, curr) =>
+                            prev.requestEditDeleteState !=
+                            curr.requestEditDeleteState,
+                        listener: (context, state) {
+                          if (state.requestEditDeleteState.isSuccess) {
+                            showToast(
+                              context: context,
+                              message: state.requestEditDeleteMessage,
+                              state: ToastStates.success,
+                            );
+                            Navigator.pop(context);
+                          }
+                          if (state.requestEditDeleteState.isError) {
+                            showToast(
+                              context: context,
+                              message: state.errorMessage,
+                              state: ToastStates.error,
+                            );
+                          }
+                        },
+                        buildWhen: (prev, curr) =>
+                            prev.requestEditDeleteState !=
+                            curr.requestEditDeleteState,
+                        builder: (context, state) {
+                          return PrimaryButton(
+                            isLoading: state.requestEditDeleteState.isLoading,
+                            text: "تأكيد",
+                            onPressed: () {
+                              onConfirm();
+                            },
+                          );
                         },
                       ),
                     ),
@@ -83,7 +112,7 @@ class CustomDialog extends StatelessWidget {
             top: 8,
             end: 8,
             child: IconButton(
-              onPressed: () => Navigator.pop(context,false),
+              onPressed: () => Navigator.pop(context, false),
               icon: const Icon(Icons.close, color: Colors.black54),
             ),
           ),

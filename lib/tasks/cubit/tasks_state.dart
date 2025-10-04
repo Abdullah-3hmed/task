@@ -32,7 +32,7 @@ class TasksState extends Equatable {
 
   TasksState copyWith({
     RequestStatus? tasksState,
-    final  Map<int,TaskModel>? tasks,
+      Map<int,TaskModel>? tasks,
     String? taskErrorMessage,
     RequestStatus? addTaskState,
     AddAndEditTaskResponseModel? addAndEditTaskResponseModel,
@@ -41,6 +41,8 @@ class TasksState extends Equatable {
     String? startTaskMessage,
     String? endTaskMessage,
     RequestStatus? editTaskState,
+    RequestStatus? requestEditDeleteTaskState,
+    String? requestEditDeleteTaskMessage,
     bool? isConnected,
   }) {
     return TasksState(

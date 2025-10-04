@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/maintenance/cubit/maintenance_cubit.dart';
 import 'package:task/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/maintenance/data/spare_parts_model.dart';
-import 'package:task/shared/custom_text_form_field.dart';
+import 'package:task/core/widgets/custom_text_form_field.dart';
 
 class ItemFields extends StatelessWidget {
   final AddMaintenanceItemModel item;

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/show_toast.dart';
+import 'package:task/tasks/cubit/tasks_cubit.dart';
+import 'package:task/tasks/cubit/tasks_state.dart';
 import 'package:task/tasks/data/task_model.dart';
 import 'custom_dialog.dart';
 
@@ -7,9 +12,9 @@ class CustomDismissible extends StatelessWidget {
   final Widget child;
   final String editMessage;
   final VoidCallback onEdit;
+  final VoidCallback onRequestEdit;
   final String deleteMessage;
   final VoidCallback onDelete;
-  final bool isLoading;
   final bool canEdit;
   final bool canDelete;
 
@@ -20,10 +25,10 @@ class CustomDismissible extends StatelessWidget {
     required this.editMessage,
     required this.onEdit,
     required this.deleteMessage,
-    this.isLoading = false,
     required this.onDelete,
     required this.canEdit,
     required this.canDelete,
+    required this.onRequestEdit,
   });
 
   @override
@@ -57,10 +62,9 @@ class CustomDismissible extends StatelessWidget {
             final confirm = await showDialog<bool>(
               context: context,
               builder: (_) => CustomDialog(
-                isLoading: isLoading,
                 message: editMessage,
                 onConfirm: () {
-                  onEdit();
+                  onRequestEdit();
                 },
               ),
             );
@@ -70,7 +74,6 @@ class CustomDismissible extends StatelessWidget {
           final confirm = await showDialog<bool>(
             context: context,
             builder: (_) => CustomDialog(
-              isLoading: isLoading,
               message: deleteMessage,
               onConfirm: () {
                 onDelete();
@@ -84,4 +87,6 @@ class CustomDismissible extends StatelessWidget {
       child: child,
     );
   }
+
+
 }

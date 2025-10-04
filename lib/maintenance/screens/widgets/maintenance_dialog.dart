@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/maintenance/cubit/maintenance_cubit.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_dialog_item_section.dart';
-import 'package:task/shared/custom_text_form_field.dart';
+import 'package:task/core/widgets/custom_text_form_field.dart';
 
 class MaintenanceDialog extends StatefulWidget {
   final MaintenanceCubit maintenanceCubit;

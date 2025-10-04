@@ -12,7 +12,7 @@ import 'package:task/fuel/data/fuel_model.dart';
 import 'package:task/fuel/screens/widgets/fuel_dialog.dart';
 import 'package:task/fuel/screens/widgets/fuel_list_item.dart';
 import 'package:task/fuel/screens/widgets/fuels_list.dart';
-import 'package:task/shared/custom_text_form_field.dart';
+import 'package:task/core/widgets/custom_text_form_field.dart';
 
 class FuelScreen extends StatelessWidget {
   const FuelScreen({super.key});
