@@ -8,15 +8,16 @@ class MaintenanceState extends Equatable {
   final RequestStatus maintenanceState;
   final RequestStatus getSparePartsState;
   final RequestStatus addMaintenanceState;
+  final RequestStatus editMaintenanceState;
+  final RequestStatus deleteMaintenanceState;
   final String addMaintenanceMessage;
+  final String deleteMaintenanceMessage;
   final String maintenanceErrorMessage;
   final List<MaintenanceModel> maintenances;
   final List<SparePartsModel> spareParts;
   final String maintenanceName;
   final List<AddMaintenanceItemModel> maintenanceItems;
-
   final bool isConnected;
-
 
   const MaintenanceState({
     this.maintenanceState = RequestStatus.initial,
@@ -28,6 +29,9 @@ class MaintenanceState extends Equatable {
     this.addMaintenanceMessage = "",
     this.maintenanceName = "",
     this.maintenanceItems = const [],
+    this.editMaintenanceState = RequestStatus.initial,
+    this.deleteMaintenanceState = RequestStatus.initial,
+    this.deleteMaintenanceMessage = "",
     this.isConnected = true,
   });
 
@@ -41,6 +45,9 @@ class MaintenanceState extends Equatable {
     String? addMaintenanceMessage,
     String? maintenanceName,
     List<AddMaintenanceItemModel>? maintenanceItems,
+    RequestStatus? editMaintenanceState,
+    RequestStatus? deleteMaintenanceState,
+    String? deleteMaintenanceMessage,
     bool? isConnected,
   }) => MaintenanceState(
     maintenanceState: maintenanceState ?? this.maintenanceState,
@@ -53,6 +60,9 @@ class MaintenanceState extends Equatable {
     addMaintenanceMessage: addMaintenanceMessage ?? this.addMaintenanceMessage,
     maintenanceName: maintenanceName ?? this.maintenanceName,
     maintenanceItems: maintenanceItems ?? this.maintenanceItems,
+    editMaintenanceState: editMaintenanceState ?? this.editMaintenanceState,
+    deleteMaintenanceState: deleteMaintenanceState ?? this.deleteMaintenanceState,
+    deleteMaintenanceMessage: deleteMaintenanceMessage ?? this.deleteMaintenanceMessage,
     isConnected: isConnected ?? this.isConnected,
   );
 
@@ -67,6 +77,9 @@ class MaintenanceState extends Equatable {
     addMaintenanceMessage,
     maintenanceName,
     maintenanceItems,
+    editMaintenanceState,
+    deleteMaintenanceState,
+    deleteMaintenanceMessage,
     isConnected,
   ];
 }

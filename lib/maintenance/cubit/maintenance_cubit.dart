@@ -3,6 +3,7 @@ import 'package:task/core/enums/request_status.dart';
 import 'package:task/maintenance/cubit/maintenance_state.dart';
 import 'package:task/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/maintenance/data/add_maintenance_request_model.dart';
+import 'package:task/maintenance/data/edit_maintenance_request_model.dart';
 import 'package:task/maintenance/repo/maintenance_repo.dart';
 
 class MaintenanceCubit extends Cubit<MaintenanceState> {
@@ -98,6 +99,69 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> editMaintenance({
+    required int index,
+    required int maintenanceId,
+  }) async {
+    emit(state.copyWith(editMaintenanceState: RequestStatus.loading));
+    final EditMaintenanceRequestModel editMaintenanceRequestModel =
+        EditMaintenanceRequestModel(
+          id: maintenanceId,
+          name: state.maintenanceName,
+          items: state.maintenanceItems.map((item) {
+            return MaintenanceItemModel(
+              carSparePartId: item.carSpartId ?? 0,
+              description: item.description,
+            );
+          }).toList(),
+        );
+    final result = await maintenanceRepo.editMaintenance(
+      editMaintenanceRequestModel: editMaintenanceRequestModel,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          editMaintenanceState: RequestStatus.error,
+          maintenanceErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (addMaintenanceResponseModel) {
+        final newMaintenances = [...state.maintenances];
+        newMaintenances[index] = addMaintenanceResponseModel.maintenanceModel;
+        emit(
+          state.copyWith(
+            editMaintenanceState: RequestStatus.success,
+            addMaintenanceMessage: addMaintenanceResponseModel.message,
+            maintenances: newMaintenances,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> deleteMaintenance({required int index, required int id}) async {
+    emit(state.copyWith(deleteMaintenanceState: RequestStatus.loading));
+    final result = await maintenanceRepo.deleteMaintenance(id: id);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          deleteMaintenanceState: RequestStatus.error,
+          maintenanceErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (message) {
+        final newMaintenances = [...state.maintenances]..removeAt(index);
+        emit(
+          state.copyWith(
+            deleteMaintenanceState: RequestStatus.success,
+            deleteMaintenanceMessage: message,
+            maintenances: newMaintenances,
+          ),
+        );
+      },
     );
   }
 

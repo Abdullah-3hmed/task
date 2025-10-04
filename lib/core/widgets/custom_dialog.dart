@@ -6,7 +6,7 @@ import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/shared/app_cubit/app_cubit.dart';
 import 'package:task/shared/app_cubit/app_state.dart';
 
-class CustomDialog<C extends Cubit<S>, S> extends StatelessWidget {
+class CustomDialog extends StatelessWidget {
   final String message;
   final VoidCallback onConfirm;
 

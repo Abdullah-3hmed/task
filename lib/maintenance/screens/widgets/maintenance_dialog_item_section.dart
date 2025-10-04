@@ -6,6 +6,7 @@ import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/maintenance/cubit/maintenance_cubit.dart';
 import 'package:task/maintenance/cubit/maintenance_state.dart';
 import 'package:task/maintenance/data/add_maintenance_request_model.dart';
+import 'package:task/maintenance/screens/widgets/edit_maintenanc_items_field.dart';
 import 'package:task/maintenance/screens/widgets/maintenance_item_widgets.dart';
 
 class MaintenanceDialogItemSection extends StatelessWidget {
@@ -31,8 +32,11 @@ class MaintenanceDialogItemSection extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               cacheExtent: 200,
-              itemBuilder: (context, index) =>
-                  ItemFields(item: state.maintenanceItems[index], index: index),
+              itemBuilder: (context, index) => EditMaintenanceItemsField(
+                item: state.maintenanceItems[index],
+                index: index,
+                cubit: context.read<MaintenanceCubit>(),
+              ),
               itemCount: state.maintenanceItems.length,
             );
           },

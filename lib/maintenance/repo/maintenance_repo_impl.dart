@@ -7,6 +7,7 @@ import 'package:task/core/utils/app_constants.dart';
 import 'package:task/core/utils/safe_api_call.dart';
 import 'package:task/maintenance/data/add_maintenance_request_model.dart';
 import 'package:task/maintenance/data/add_maintenance_response_model.dart';
+import 'package:task/maintenance/data/edit_maintenance_request_model.dart';
 import 'package:task/maintenance/data/maintenance_model.dart';
 import 'package:task/maintenance/data/spare_parts_model.dart';
 import 'package:task/maintenance/repo/maintenance_repo.dart';
@@ -71,4 +72,37 @@ class MaintenanceRepoImpl implements MaintenanceRepo {
       }
     });
   }
+
+  @override
+  Future<Either<Failure, AddMaintenanceResponseModel>> editMaintenance({
+    required EditMaintenanceRequestModel editMaintenanceRequestModel,
+  }) async {
+    return safeApiCall<AddMaintenanceResponseModel>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.addMaintenanceEndPoint,
+        data: editMaintenanceRequestModel.toJson(),
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      );
+      if (response.statusCode == 200) {
+        return AddMaintenanceResponseModel.fromJson(response.data);
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, String>> deleteMaintenance({required int id}) async =>
+      safeApiCall<String>(() async {
+        final response = await dioHelper.post(
+          url: ApiConstants.deleteMaintenanceEndPoint,
+          data: {"id": id},
+          headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        );
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        } else {
+          throw ServerException(errorMessage: response.data);
+        }
+      });
 }

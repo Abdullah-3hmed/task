@@ -20,6 +20,8 @@ class MaintenanceList extends StatelessWidget {
           date: "********",
           items: [],
           name: "******",
+          canDelete: false,
+          canEdit: false,
         ),
       );
 
@@ -27,7 +29,8 @@ class MaintenanceList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<MaintenanceCubit, MaintenanceState>(
       listenWhen: (prev, curr) =>
-          prev.maintenanceState != curr.maintenanceState,
+          prev.maintenanceState != curr.maintenanceState ||
+          prev.editMaintenanceState != curr.editMaintenanceState,
       listener: (context, state) {
         if (state.maintenanceState.isError) {
           showToast(
@@ -36,8 +39,24 @@ class MaintenanceList extends StatelessWidget {
             state: ToastStates.error,
           );
         }
+        if (state.editMaintenanceState.isError) {
+          showToast(
+            context: context,
+            message: state.maintenanceErrorMessage,
+            state: ToastStates.error,
+          );
+        }
+        if (state.editMaintenanceState.isSuccess) {
+          showToast(
+            context: context,
+            message: state.deleteMaintenanceMessage,
+            state: ToastStates.success,
+          );
+        }
       },
-      buildWhen: (prev, curr) => prev.maintenanceState != curr.maintenanceState || prev.maintenances != curr.maintenances,
+      buildWhen: (prev, curr) =>
+          prev.maintenanceState != curr.maintenanceState ||
+          prev.maintenances != curr.maintenances,
       builder: (context, state) {
         switch (state.maintenanceState) {
           case RequestStatus.loading:
@@ -69,8 +88,10 @@ class MaintenanceList extends StatelessWidget {
   }) {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) =>
-          MaintenanceListItem(maintenanceModel: maintenances[index]),
+      itemBuilder: (context, index) => MaintenanceListItem(
+        maintenanceModel: maintenances[index],
+        index: index,
+      ),
       separatorBuilder: (_, __) => const SizedBox(height: 16.0),
       itemCount: maintenances.length,
     );
