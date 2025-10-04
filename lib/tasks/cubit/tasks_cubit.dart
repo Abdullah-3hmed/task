@@ -146,7 +146,29 @@ class TasksCubit extends Cubit<TasksState> {
     );
   }
 
-
+  Future<void> deleteTask({required int taskId}) async {
+    final TasksState oldState = state;
+    final Map<int, TaskModel> updatedTasks = {...state.tasks};
+    updatedTasks.remove(taskId);
+    emit(state.copyWith(deleteTaskState: RequestStatus.loading,tasks: updatedTasks));
+    final result = await tasksRepo.deleteTask(taskId: taskId);
+    result.fold(
+      (failure) => emit(
+        oldState.copyWith(
+          deleteTaskState: RequestStatus.error,
+          taskErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (deleteTaskMessage) {
+        emit(
+          state.copyWith(
+            deleteTaskState: RequestStatus.success,
+            deleteTaskMessage: deleteTaskMessage,
+          ),
+        );
+      },
+    );
+  }
 
   Map<int, TaskModel> _generateTasksMap(List<TaskModel> tasks) {
     final Map<int, TaskModel> tasksMap = {};

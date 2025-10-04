@@ -13,6 +13,7 @@ class CustomDismissible extends StatelessWidget {
   final String editMessage;
   final VoidCallback onEdit;
   final VoidCallback onRequestEdit;
+  final VoidCallback onRequestDelete;
   final String deleteMessage;
   final VoidCallback onDelete;
   final bool canEdit;
@@ -29,6 +30,7 @@ class CustomDismissible extends StatelessWidget {
     required this.canEdit,
     required this.canDelete,
     required this.onRequestEdit,
+    required this.onRequestDelete,
   });
 
   @override
@@ -71,22 +73,25 @@ class CustomDismissible extends StatelessWidget {
             return confirm;
           }
         } else if (direction == DismissDirection.endToStart) {
-          final confirm = await showDialog<bool>(
-            context: context,
-            builder: (_) => CustomDialog(
-              message: deleteMessage,
-              onConfirm: () {
-                onDelete();
-              },
-            ),
-          );
-          return confirm;
+          if (canDelete) {
+            onDelete();
+            return true;
+          } else {
+            final confirm = await showDialog<bool>(
+              context: context,
+              builder: (_) => CustomDialog(
+                message: deleteMessage,
+                onConfirm: () {
+                 onRequestDelete();
+                },
+              ),
+            );
+            return confirm;
+          }
         }
         return false;
       },
       child: child,
     );
   }
-
-
 }

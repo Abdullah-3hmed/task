@@ -9,7 +9,9 @@ class TasksState extends Equatable {
   final RequestStatus startTaskState;
   final RequestStatus endTaskState;
   final RequestStatus editTaskState;
+  final RequestStatus deleteTaskState;
   final String startTaskMessage;
+  final String deleteTaskMessage;
   final String endTaskMessage;
   final Map<int,TaskModel>tasks;
   final AddAndEditTaskResponseModel addAndEditTaskResponseModel;
@@ -27,6 +29,8 @@ class TasksState extends Equatable {
     this.startTaskMessage = "",
     this.endTaskMessage = "",
     this.editTaskState = RequestStatus.initial,
+    this.deleteTaskState = RequestStatus.initial,
+    this.deleteTaskMessage = "",
     this.isConnected = true,
   });
 
@@ -43,6 +47,8 @@ class TasksState extends Equatable {
     RequestStatus? editTaskState,
     RequestStatus? requestEditDeleteTaskState,
     String? requestEditDeleteTaskMessage,
+    RequestStatus? deleteTaskState,
+    String? deleteTaskMessage,
     bool? isConnected,
   }) {
     return TasksState(
@@ -56,6 +62,8 @@ class TasksState extends Equatable {
       startTaskMessage: startTaskMessage ?? this.startTaskMessage,
       endTaskMessage: endTaskMessage ?? this.endTaskMessage,
       editTaskState: editTaskState ?? this.editTaskState,
+      deleteTaskState: deleteTaskState ?? this.deleteTaskState,
+      deleteTaskMessage: deleteTaskMessage ?? this.deleteTaskMessage,
       isConnected: isConnected ?? this.isConnected,
     );
   }
@@ -72,6 +80,8 @@ class TasksState extends Equatable {
     startTaskMessage,
     endTaskMessage,
     editTaskState,
+    deleteTaskState,
+    deleteTaskMessage,
     isConnected,
   ];
 }

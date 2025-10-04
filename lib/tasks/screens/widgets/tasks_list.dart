@@ -26,7 +26,9 @@ class TasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TasksCubit, TasksState>(
-      listenWhen: (prev, cur) => prev.tasksState != cur.tasksState,
+      listenWhen: (prev, cur) =>
+          prev.tasksState != cur.tasksState ||
+          prev.deleteTaskState != cur.deleteTaskState,
       listener: (context, state) {
         if (state.tasksState.isError) {
           showToast(
@@ -35,9 +37,23 @@ class TasksList extends StatelessWidget {
             state: ToastStates.error,
           );
         }
+        if (state.deleteTaskState.isError) {
+          showToast(
+            context: context,
+            message: state.taskErrorMessage,
+            state: ToastStates.error,
+          );
+        }
+        if (state.deleteTaskState.isSuccess) {
+          showToast(
+            context: context,
+            message: state.deleteTaskMessage,
+            state: ToastStates.success,
+          );
+        }
       },
       buildWhen: (prev, cur) =>
-      prev.tasksState != cur.tasksState || prev.tasks != cur.tasks,
+          prev.tasksState != cur.tasksState || prev.tasks != cur.tasks,
       builder: (context, state) {
         switch (state.tasksState) {
           case RequestStatus.loading:
@@ -45,7 +61,7 @@ class TasksList extends StatelessWidget {
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) =>
-                const TaskListItem(task: dummyTaskModel),
+                    const TaskListItem(task: dummyTaskModel),
                 separatorBuilder: (_, __) => const SizedBox(height: 16.0),
                 itemCount: 10,
               ),

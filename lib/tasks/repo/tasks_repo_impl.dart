@@ -106,4 +106,18 @@ class TasksRepoImpl implements TasksRepo {
     }
   });
 
+  @override
+  Future<Either<Failure, String>> deleteTask({required int taskId}) =>
+      safeApiCall<String>(() async {
+        final response = await dioHelper.post(
+          url: ApiConstants.deleteTaskEndPoint,
+          data: {"id": taskId},
+          headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        );
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        } else {
+          throw ServerException(errorMessage: response.data);
+        }
+      });
 }

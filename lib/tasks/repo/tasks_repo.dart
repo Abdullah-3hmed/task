@@ -25,4 +25,5 @@ abstract class TasksRepo {
   Future<Either<Failure,AddAndEditTaskResponseModel>> editTask({
     required EditTaskRequestModel editTaskRequestModel,
   });
+  Future<Either<Failure, String>> deleteTask({required int taskId});
 }

@@ -45,8 +45,14 @@ class _TaskListItemState extends State<TaskListItem> {
           requestEditDelete: RequestEditDeleteEnum.edit,
         );
       },
-      onDelete: (){
-        print("deleted");
+      onRequestDelete: ()async{
+        await context.read<AppCubit>().requestEditDelete(
+          id: widget.task.id,
+          requestEditDelete: RequestEditDeleteEnum.delete,
+        );
+      },
+      onDelete: ()async{
+       await context.read<TasksCubit>().deleteTask(taskId: widget.task.id);
       },
       onEdit: () {
         showEditTaskDialog(
