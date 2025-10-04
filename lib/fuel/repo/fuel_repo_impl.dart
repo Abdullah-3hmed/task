@@ -45,4 +45,36 @@ class FuelRepoImpl implements FuelRepo {
       throw ServerException(errorMessage: response.data);
     }
   });
+
+  @override
+  Future<Either<Failure, FuelModel>> editFuel({
+    required int fuelId,
+    required double numberOfLiters,
+  }) => safeApiCall(() async {
+    final response = await dioHelper.post(
+      url: ApiConstants.editFuelEndPoint,
+      headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      data: {"id": fuelId, "name": numberOfLiters},
+    );
+    if (response.statusCode == 200) {
+      return FuelModel.fromJson(response.data["data"]);
+    } else {
+      throw ServerException(errorMessage: response.data);
+    }
+  });
+
+  @override
+  Future<Either<Failure, String>> deleteFuel({required int fuelId}) async =>
+      safeApiCall(() async {
+        final response = await dioHelper.post(
+          url: ApiConstants.deleteFuelEndPoint,
+          headers: {"Authorization": "Bearer ${AppConstants.token}"},
+          data: {"id": fuelId},
+        );
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        } else {
+          throw ServerException(errorMessage: response.data);
+        }
+      });
 }

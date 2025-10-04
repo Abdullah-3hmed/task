@@ -76,7 +76,7 @@ class CustomDialog<C extends Cubit<S>, S> extends StatelessWidget {
                           if (state.requestEditDeleteState.isSuccess) {
                             showToast(
                               context: context,
-                              message: state.requestEditDeleteMessage,
+                              message: state.message,
                               state: ToastStates.success,
                             );
                             Navigator.pop(context);

@@ -5,15 +5,21 @@ import 'package:task/fuel/data/fuel_model.dart';
 class FuelState extends Equatable {
   final RequestStatus getFuelState;
   final RequestStatus addFuelState;
-  final List<FuelModel> fuels;
+  final RequestStatus editFuelState;
+  final RequestStatus deleteFuelState;
+  final Map<int, FuelModel> fuels;
   final String fuelErrorMessage;
+  final String deleteFuelMessage;
   final bool isConnected;
 
   const FuelState({
     this.getFuelState = RequestStatus.initial,
     this.addFuelState = RequestStatus.initial,
     this.fuelErrorMessage = "",
-    this.fuels = const [],
+    this.fuels = const {},
+    this.editFuelState = RequestStatus.initial,
+    this.deleteFuelState = RequestStatus.initial,
+    this.deleteFuelMessage = "",
     this.isConnected = true,
   });
 
@@ -21,13 +27,19 @@ class FuelState extends Equatable {
     RequestStatus? getFuelState,
     String? fuelErrorMessage,
     RequestStatus? addFuelState,
-    List<FuelModel>? fuels,
+    Map<int, FuelModel>? fuels,
+    RequestStatus? editFuelState,
+    RequestStatus? deleteFuelState,
+    String? deleteFuelMessage,
     bool? isConnected,
   }) => FuelState(
     getFuelState: getFuelState ?? this.getFuelState,
     fuelErrorMessage: fuelErrorMessage ?? this.fuelErrorMessage,
     addFuelState: addFuelState ?? this.addFuelState,
     fuels: fuels ?? this.fuels,
+    editFuelState: editFuelState ?? this.editFuelState,
+    deleteFuelState: deleteFuelState ?? this.deleteFuelState,
+    deleteFuelMessage: deleteFuelMessage ?? this.deleteFuelMessage,
     isConnected: isConnected ?? this.isConnected,
   );
 
@@ -37,6 +49,9 @@ class FuelState extends Equatable {
     addFuelState,
     fuelErrorMessage,
     fuels,
+    editFuelState,
+    deleteFuelState,
+    deleteFuelMessage,
     isConnected,
   ];
 }

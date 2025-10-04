@@ -20,7 +20,6 @@ class FuelScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FuelCubit fuelCubit = getIt<FuelCubit>();
-    fuelCubit.getFuels();
     return BlocProvider.value(
       value: fuelCubit..getFuels(),
       child: Directionality(

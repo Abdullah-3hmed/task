@@ -6,4 +6,10 @@ abstract class FuelRepo {
   Future<Either<Failure, List<FuelModel>>> getFuels();
 
   Future<Either<Failure, FuelModel>> addFuel({required double numberOfLiters});
+
+  Future<Either<Failure, FuelModel>> editFuel({
+    required int fuelId,
+    required double numberOfLiters,
+  });
+  Future<Either<Failure, String>> deleteFuel({required int fuelId});
 }

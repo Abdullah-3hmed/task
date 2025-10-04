@@ -8,7 +8,7 @@ class AppCubit extends Cubit<AppState> {
   AppCubit({required this.appRepo}) : super(const AppState());
   final AppRepo appRepo;
 
-  Future<void> requestEditDelete({
+  Future<void> requestEditDeleteTask({
     required int id,
     required RequestEditDeleteEnum requestEditDelete,
   }) async {
@@ -27,7 +27,31 @@ class AppCubit extends Cubit<AppState> {
       (requestEditDeleteTaskMessage) => emit(
         state.copyWith(
           requestEditDeleteState: RequestStatus.success,
-          requestEditDeleteMessage: requestEditDeleteTaskMessage,
+          message: requestEditDeleteTaskMessage,
+        ),
+      ),
+    );
+  }
+  Future<void> requestEditDeleteFuel({
+    required int id,
+    required RequestEditDeleteEnum requestEditDelete,
+  }) async {
+    emit(state.copyWith(requestEditDeleteState: RequestStatus.loading));
+    final result = await appRepo.requestEditDeleteFuel(
+      fuelId: id,
+      requestEditDelete: requestEditDelete,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          requestEditDeleteState: RequestStatus.error,
+          errorMessage: failure.errorMessage,
+        ),
+      ),
+      (requestEditDeleteFuelMessage) => emit(
+        state.copyWith(
+          requestEditDeleteState: RequestStatus.success,
+          message: requestEditDeleteFuelMessage,
         ),
       ),
     );

@@ -11,6 +11,11 @@ class ApiConstants {
   static const String getUserMaintenancesEndPoint = "get-user-maintenances";
   static const String getSparePartsEndPoint = "settings";
   static const String addMaintenanceEndPoint = "add-maintenances";
+
+  ///fuel
   static const String getUserFuelsEndPoint = "get-user-fuels";
   static const String addFuelEndPoint = "add-fuel";
+  static const String editFuelEndPoint = "edit-fuel";
+  static const String deleteFuelEndPoint = "delete-fuel";
+  static const String requestEditDeleteFuelEndPoint = "request-edit-delete-fuel";
 }

@@ -14,19 +14,41 @@ class FuelsList extends StatelessWidget {
 
   static List<FuelModel> dummyFuels = List<FuelModel>.generate(
     5,
-    (context) => const FuelModel(id: 0, name: 0.0, date: '********'),
+    (context) => const FuelModel(
+      id: 0,
+      liters: 0.0,
+      date: '********',
+      canEdit: false,
+      canDelete: false,
+    ),
   );
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FuelCubit, FuelState>(
-      listenWhen: (prev, curr) => prev.getFuelState != curr.getFuelState,
+      listenWhen: (prev, curr) =>
+          prev.getFuelState != curr.getFuelState ||
+          prev.deleteFuelState != curr.deleteFuelState,
       listener: (context, state) {
         if (state.getFuelState.isError) {
           showToast(
             context: context,
             message: state.fuelErrorMessage,
             state: ToastStates.error,
+          );
+        }
+        if (state.deleteFuelState.isError) {
+          showToast(
+            context: context,
+            message: state.fuelErrorMessage,
+            state: ToastStates.error,
+          );
+        }
+        if (state.deleteFuelState.isSuccess) {
+          showToast(
+            context: context,
+            message: state.deleteFuelMessage,
+            state: ToastStates.success,
           );
         }
       },
@@ -37,7 +59,7 @@ class FuelsList extends StatelessWidget {
           case RequestStatus.loading:
             return Skeletonizer(child: _buildFuelList(fuels: dummyFuels));
           case RequestStatus.success:
-            return _buildFuelList(fuels: state.fuels);
+            return _buildFuelList(fuels: state.fuels.values.toList());
           case RequestStatus.error:
             if (!state.isConnected) {
               return NoInternetWidget(
@@ -47,7 +69,7 @@ class FuelsList extends StatelessWidget {
                 errorMessage: state.fuelErrorMessage,
               );
             } else {
-              return _buildFuelList(fuels: state.fuels);
+              return _buildFuelList(fuels: state.fuels.values.toList());
             }
           default:
             return const SizedBox.shrink();

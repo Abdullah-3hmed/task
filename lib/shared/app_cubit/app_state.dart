@@ -3,33 +3,28 @@ import 'package:task/core/enums/request_status.dart';
 
 class AppState extends Equatable {
   final RequestStatus requestEditDeleteState;
-  final String requestEditDeleteMessage;
+  final String message;
   final String errorMessage;
 
   const AppState({
     this.requestEditDeleteState = RequestStatus.initial,
-    this.requestEditDeleteMessage = "",
+    this.message = "",
     this.errorMessage = "",
   });
 
   AppState copyWith({
     RequestStatus? requestEditDeleteState,
-    String? requestEditDeleteMessage,
+    String? message,
     String? errorMessage,
   }) {
     return AppState(
       requestEditDeleteState:
           requestEditDeleteState ?? this.requestEditDeleteState,
-      requestEditDeleteMessage:
-          requestEditDeleteMessage ?? this.requestEditDeleteMessage,
-      errorMessage: requestEditDeleteMessage ?? this.errorMessage,
+      message: message ?? this.message,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object> get props => [
-    requestEditDeleteState,
-    requestEditDeleteMessage,
-    errorMessage,
-  ];
+  List<Object> get props => [requestEditDeleteState, message, errorMessage];
 }
