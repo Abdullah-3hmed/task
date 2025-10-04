@@ -18,6 +18,8 @@ class TasksList extends StatelessWidget {
     description: "************",
     startDateTime: "******",
     endDateTime: "******",
+    canEdit: false,
+    canDelete: false,
     status: "******",
   );
 
@@ -49,7 +51,7 @@ class TasksList extends StatelessWidget {
               ),
             );
           case RequestStatus.success:
-            return _buildTasksList(tasks: state.tasks);
+            return _buildTasksList(tasks: state.tasks.values.toList());
           case RequestStatus.error:
             if (!state.isConnected) {
               return NoInternetWidget(
@@ -60,7 +62,7 @@ class TasksList extends StatelessWidget {
                 },
               );
             }
-            return _buildTasksList(tasks: state.tasks);
+            return _buildTasksList(tasks: state.tasks.values.toList());
           default:
             return const SizedBox.shrink();
         }

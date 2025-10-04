@@ -57,7 +57,7 @@ class CustomDialog extends StatelessWidget {
                     Expanded(
                       child: PrimaryButton(
                         text: "إلغاء",
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(context, false),
                         textColor: const Color(0xFF5B8C51),
                         backgroundColor: Colors.white,
                         borderColor: const Color(0xFF5B8C51),
@@ -68,7 +68,10 @@ class CustomDialog extends StatelessWidget {
                       child: PrimaryButton(
                         isLoading: isLoading,
                         text: "تأكيد",
-                        onPressed: onConfirm,
+                        onPressed: (){
+                           onConfirm();
+                          Navigator.pop(context, true);
+                        },
                       ),
                     ),
                   ],
@@ -80,7 +83,7 @@ class CustomDialog extends StatelessWidget {
             top: 8,
             end: 8,
             child: IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context,false),
               icon: const Icon(Icons.close, color: Colors.black54),
             ),
           ),

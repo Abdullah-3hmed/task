@@ -7,36 +7,44 @@ import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/shared/custom_text_form_field.dart';
 import 'package:task/tasks/cubit/tasks_cubit.dart';
 import 'package:task/tasks/cubit/tasks_state.dart';
+import 'package:task/tasks/data/edit_task_request_model.dart';
+import 'package:task/tasks/data/task_model.dart';
 import 'package:task/tasks/data/add_task_request_model.dart';
 
-class AddTaskDialog extends StatefulWidget {
+class EditTaskDialog extends StatefulWidget {
   final TasksCubit cubit;
+  final TaskModel task;
 
-  const AddTaskDialog({super.key, required this.cubit});
+  const EditTaskDialog({super.key, required this.cubit, required this.task});
 
   @override
-  State<AddTaskDialog> createState() => _AddTaskDialogState();
+  State<EditTaskDialog> createState() => _EditTaskDialogState();
 }
 
-class _AddTaskDialogState extends State<AddTaskDialog> {
+class _EditTaskDialogState extends State<EditTaskDialog> {
   late final GlobalKey<FormState> formKey;
-
- late final TextEditingController dateController;
+  late final TextEditingController nameController;
+  late final TextEditingController descriptionController;
+  late final TextEditingController dateController;
 
   late AutovalidateMode autovalidateMode;
-  String name = "";
-  String description = "";
 
   @override
   void initState() {
+    super.initState();
     formKey = GlobalKey<FormState>();
     autovalidateMode = AutovalidateMode.disabled;
-    dateController = TextEditingController();
-    super.initState();
+    nameController = TextEditingController(text: widget.task.name);
+    descriptionController = TextEditingController(
+      text: widget.task.description,
+    );
+    dateController = TextEditingController(text: widget.task.startDateTime);
   }
 
   @override
   void dispose() {
+    nameController.dispose();
+    descriptionController.dispose();
     dateController.dispose();
     super.dispose();
   }
@@ -60,7 +68,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   const Align(
                     alignment: AlignmentDirectional.center,
                     child: Text(
-                      "اضافة مهمة",
+                      "تعديل المهمة",
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
@@ -71,7 +79,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   const Align(
                     alignment: AlignmentDirectional.centerEnd,
                     child: Text(
-                      "يمكنك اضافة المهام التي تقوم بها عن طريق نموذج التعبئة التالي",
+                      "يمكنك تعديل بيانات المهمة عبر النموذج التالي",
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 10.0,
@@ -97,8 +105,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                         ),
                         const SizedBox(height: 5.0),
                         CustomTextFormField(
+                          controller: nameController,
                           hintText: "عنوان المهمة",
-                          onSaved: (value) => name = value!,
                         ),
                         const SizedBox(height: 20.0),
                         const Align(
@@ -115,7 +123,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                         CustomTextFormField(
                           controller: dateController,
                           readOnly: true,
-                          hintText: "تاريخ المهمة (تلقائي)",
+                          hintText: "تاريخ المهمة",
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
@@ -152,8 +160,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                         ),
                         const SizedBox(height: 16.0),
                         CustomTextFormField(
+                          controller: descriptionController,
                           hintText: "تفاصيل المهمة",
-                          onSaved: (value) => description = value!,
                           maxLines: 5,
                         ),
                       ],
@@ -177,42 +185,45 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                         value: widget.cubit,
                         child: BlocConsumer<TasksCubit, TasksState>(
                           listenWhen: (prev, curr) =>
-                              prev.addTaskState != curr.addTaskState,
+                              prev.editTaskState != curr.editTaskState,
                           listener: (context, state) {
-                            if (state.addTaskState.isError) {
+                            if (state.editTaskState.isError) {
                               showToast(
                                 context: context,
                                 message: state.taskErrorMessage,
                                 state: ToastStates.error,
                               );
                             }
-                            if (state.addTaskState.isSuccess) {
+                            if (state.editTaskState.isSuccess) {
                               showToast(
                                 context: context,
-                                message: state.addAndEditTaskResponseModel.message,
+                                message:
+                                    state.addAndEditTaskResponseModel.message,
                                 state: ToastStates.success,
                               );
                               Navigator.pop(context);
                             }
                           },
                           buildWhen: (prev, curr) =>
-                              prev.addTaskState != curr.addTaskState,
+                              prev.editTaskState != curr.editTaskState,
                           builder: (context, state) {
                             return Expanded(
                               child: PrimaryButton(
-                                isLoading: state.addTaskState.isLoading,
-                                text: "حفظ التغيرات",
+                                isLoading: state.editTaskState.isLoading,
+                                text: "حفظ التغييرات",
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
-                                    formKey.currentState!.save();
-                                    final addTaskRequestModel =
-                                        AddTaskRequestModel(
-                                          name: name,
-                                          description: description,
+                                    EditTaskRequestModel editTaskRequestModel =
+                                        EditTaskRequestModel(
+                                          id: widget.task.id,
+                                          name: nameController.text,
+                                          description:
+                                              descriptionController.text,
                                           date: dateController.text,
                                         );
-                                    widget.cubit.addTask(
-                                      addTaskRequestModel: addTaskRequestModel,
+                                    widget.cubit.editTask(
+                                      editTaskRequestModel:
+                                          editTaskRequestModel,
                                     );
                                   } else {
                                     setState(() {
@@ -246,9 +257,13 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   }
 }
 
-void showAddTaskDialog(BuildContext context, {required TasksCubit cubit}) {
+void showEditTaskDialog(
+  BuildContext context, {
+  required TasksCubit cubit,
+  required TaskModel task,
+}) {
   showDialog(
     context: context,
-    builder: (_) => AddTaskDialog(cubit: cubit),
+    builder: (_) => EditTaskDialog(cubit: cubit, task: task),
   );
 }

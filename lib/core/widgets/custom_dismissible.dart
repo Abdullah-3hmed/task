@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:task/tasks/data/task_model.dart';
 import 'custom_dialog.dart';
 
 class CustomDismissible extends StatelessWidget {
   final Key keyValue;
   final Widget child;
   final String editMessage;
-  final Future<void> Function() onEdit;
+  final VoidCallback onEdit;
   final String deleteMessage;
-  final Future<void> Function() onDelete;
+  final VoidCallback onDelete;
   final bool isLoading;
+  final bool canEdit;
+  final bool canDelete;
 
   const CustomDismissible({
     super.key,
@@ -19,6 +22,8 @@ class CustomDismissible extends StatelessWidget {
     required this.deleteMessage,
     this.isLoading = false,
     required this.onDelete,
+    required this.canEdit,
+    required this.canDelete,
   });
 
   @override
@@ -45,19 +50,21 @@ class CustomDismissible extends StatelessWidget {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          final confirm = await showDialog<bool>(
-            context: context,
-            builder: (_) => CustomDialog(
-              isLoading: isLoading,
-              message: editMessage,
-              onConfirm: () async {
-                await onEdit();
-              },
-            ),
-          );
-          if (confirm == true) {
-            await onEdit();
-            return true;
+          if (canEdit) {
+            onEdit();
+            return false;
+          } else {
+            final confirm = await showDialog<bool>(
+              context: context,
+              builder: (_) => CustomDialog(
+                isLoading: isLoading,
+                message: editMessage,
+                onConfirm: () {
+                  onEdit();
+                },
+              ),
+            );
+            return confirm;
           }
         } else if (direction == DismissDirection.endToStart) {
           final confirm = await showDialog<bool>(
@@ -65,15 +72,12 @@ class CustomDismissible extends StatelessWidget {
             builder: (_) => CustomDialog(
               isLoading: isLoading,
               message: deleteMessage,
-              onConfirm: () async {
-                await onDelete();
+              onConfirm: () {
+                onDelete();
               },
             ),
           );
-          if (confirm == true) {
-            await onDelete();
-            return true;
-          }
+          return confirm;
         }
         return false;
       },

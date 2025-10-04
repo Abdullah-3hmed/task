@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/core/utils/app_constants.dart';
 import 'package:task/core/widgets/custom_dialog.dart';
 import 'package:task/core/widgets/custom_dismissible.dart';
 import 'package:task/core/widgets/primary_button.dart';
+import 'package:task/tasks/cubit/tasks_cubit.dart';
 import 'package:task/tasks/data/task_model.dart';
+import 'package:task/tasks/screens/widgets/edit_task_dialog.dart';
 
 class TaskListItem extends StatefulWidget {
   const TaskListItem({super.key, required this.task});
@@ -32,14 +35,17 @@ class _TaskListItemState extends State<TaskListItem> {
           "لحذف هذه المهمة تحتاج إلى إذن من إدارة التطيق . هل ترغب فى ذلك ؟",
       editMessage:
           "للتعديل على هذه المهمة تحتاج إلى إذن من إدارة التطبيق . هل ترغب فى ذلك؟",
+      canDelete: widget.task.canDelete,
+      canEdit: widget.task.canEdit,
       onDelete: (){
         print("deleted");
-     return Future.value("deleted");
-
       },
-      onEdit: (){
-        print("edited");
-        return Future.value("edited");
+      onEdit: () {
+        showEditTaskDialog(
+          context,
+          task: widget.task,
+          cubit: context.read<TasksCubit>(),
+        );
       },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,

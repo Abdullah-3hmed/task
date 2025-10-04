@@ -2,7 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/tasks/cubit/tasks_state.dart';
 import 'package:task/tasks/data/add_task_request_model.dart';
+import 'package:task/tasks/data/edit_task_request_model.dart';
 import 'package:task/tasks/data/start_and_end_task_request_model.dart';
+import 'package:task/tasks/data/task_model.dart';
 import 'package:task/tasks/repo/tasks_repo.dart';
 
 class TasksCubit extends Cubit<TasksState> {
@@ -31,8 +33,10 @@ class TasksCubit extends Cubit<TasksState> {
           );
         }
       },
-      (tasks) =>
-          emit(state.copyWith(tasksState: RequestStatus.success, tasks: tasks)),
+      (tasks) {
+        Map<int, TaskModel> taskMap = _generateTasksMap(tasks);
+        emit(state.copyWith(tasksState: RequestStatus.success, tasks: taskMap));
+      },
     );
   }
 
@@ -50,13 +54,19 @@ class TasksCubit extends Cubit<TasksState> {
           taskErrorMessage: failure.errorMessage,
         ),
       ),
-      (addTaskResponseModel) => emit(
-        state.copyWith(
-          addTaskState: RequestStatus.success,
-          addTaskResponseModel: addTaskResponseModel,
-          tasks: [...state.tasks, addTaskResponseModel.task],
-        ),
-      ),
+      (addAndEditTaskResponseModel) {
+        emit(
+          state.copyWith(
+            addTaskState: RequestStatus.success,
+            addAndEditTaskResponseModel: addAndEditTaskResponseModel,
+            tasks: {
+              ...state.tasks,
+              addAndEditTaskResponseModel.task.id:
+                  addAndEditTaskResponseModel.task,
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -104,5 +114,42 @@ class TasksCubit extends Cubit<TasksState> {
         ),
       ),
     );
+  }
+
+  Future<void> editTask({
+    required EditTaskRequestModel editTaskRequestModel,
+  }) async {
+    emit(state.copyWith(editTaskState: RequestStatus.loading));
+    final result = await tasksRepo.editTask(
+      editTaskRequestModel: editTaskRequestModel,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          editTaskState: RequestStatus.error,
+          taskErrorMessage: failure.errorMessage,
+        ),
+      ),
+      (addAndEditTaskResponseModel) {
+        final Map<int, TaskModel> updatedTasks = {...state.tasks};
+        updatedTasks[addAndEditTaskResponseModel.task.id] =
+            addAndEditTaskResponseModel.task;
+        emit(
+          state.copyWith(
+            editTaskState: RequestStatus.success,
+            addAndEditTaskResponseModel: addAndEditTaskResponseModel,
+            tasks: updatedTasks,
+          ),
+        );
+      },
+    );
+  }
+
+  Map<int, TaskModel> _generateTasksMap(List<TaskModel> tasks) {
+    final Map<int, TaskModel> tasksMap = {};
+    for (var task in tasks) {
+      tasksMap[task.id] = task;
+    }
+    return tasksMap;
   }
 }

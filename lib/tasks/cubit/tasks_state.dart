@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:task/core/enums/request_status.dart';
-import 'package:task/tasks/data/add_task_response_model.dart';
+import 'package:task/tasks/data/add_and_edit_task_response_model.dart';
 import 'package:task/tasks/data/task_model.dart';
 
 class TasksState extends Equatable {
@@ -8,36 +8,39 @@ class TasksState extends Equatable {
   final RequestStatus addTaskState;
   final RequestStatus startTaskState;
   final RequestStatus endTaskState;
+  final RequestStatus editTaskState;
   final String startTaskMessage;
   final String endTaskMessage;
-  final List<TaskModel> tasks;
-  final AddTaskResponseModel addTaskResponseModel;
+  final Map<int,TaskModel>tasks;
+  final AddAndEditTaskResponseModel addAndEditTaskResponseModel;
   final String taskErrorMessage;
   final bool isConnected;
 
   const TasksState({
     this.tasksState = RequestStatus.initial,
-    this.tasks = const [],
+    this.tasks = const {},
     this.taskErrorMessage = "",
     this.addTaskState = RequestStatus.initial,
-    this.addTaskResponseModel = AddTaskResponseModel.empty,
+    this.addAndEditTaskResponseModel = AddAndEditTaskResponseModel.empty,
     this.startTaskState = RequestStatus.initial,
     this.endTaskState = RequestStatus.initial,
     this.startTaskMessage = "",
     this.endTaskMessage = "",
+    this.editTaskState = RequestStatus.initial,
     this.isConnected = true,
   });
 
   TasksState copyWith({
     RequestStatus? tasksState,
-    List<TaskModel>? tasks,
+    final  Map<int,TaskModel>? tasks,
     String? taskErrorMessage,
     RequestStatus? addTaskState,
-    AddTaskResponseModel? addTaskResponseModel,
+    AddAndEditTaskResponseModel? addAndEditTaskResponseModel,
     RequestStatus? startTaskState,
     RequestStatus? endTaskState,
     String? startTaskMessage,
     String? endTaskMessage,
+    RequestStatus? editTaskState,
     bool? isConnected,
   }) {
     return TasksState(
@@ -45,11 +48,12 @@ class TasksState extends Equatable {
       tasks: tasks ?? this.tasks,
       taskErrorMessage: taskErrorMessage ?? this.taskErrorMessage,
       addTaskState: addTaskState ?? this.addTaskState,
-      addTaskResponseModel: addTaskResponseModel ?? this.addTaskResponseModel,
+      addAndEditTaskResponseModel: addAndEditTaskResponseModel ?? this.addAndEditTaskResponseModel,
       startTaskState: startTaskState ?? this.startTaskState,
       endTaskState: endTaskState ?? this.endTaskState,
       startTaskMessage: startTaskMessage ?? this.startTaskMessage,
       endTaskMessage: endTaskMessage ?? this.endTaskMessage,
+      editTaskState: editTaskState ?? this.editTaskState,
       isConnected: isConnected ?? this.isConnected,
     );
   }
@@ -60,11 +64,12 @@ class TasksState extends Equatable {
     tasks,
     taskErrorMessage,
     addTaskState,
-    addTaskResponseModel,
+    addAndEditTaskResponseModel,
     startTaskState,
     endTaskState,
     startTaskMessage,
     endTaskMessage,
+    editTaskState,
     isConnected,
   ];
 }

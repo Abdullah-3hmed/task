@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:task/tasks/data/task_model.dart';
 
-class AddTaskResponseModel extends Equatable {
+class AddAndEditTaskResponseModel extends Equatable {
   final String message;
   final TaskModel task;
 
-  const AddTaskResponseModel({required this.message, required this.task});
+  const AddAndEditTaskResponseModel({required this.message, required this.task});
 
-  factory AddTaskResponseModel.fromJson(Map<String, dynamic> json) =>
-      AddTaskResponseModel(
+  factory AddAndEditTaskResponseModel.fromJson(Map<String, dynamic> json) =>
+      AddAndEditTaskResponseModel(
         message: json["message"] ?? "",
         task: TaskModel.fromJson(json["data"] ?? {}),
       );
-  static const AddTaskResponseModel empty = AddTaskResponseModel(
+  static const AddAndEditTaskResponseModel empty = AddAndEditTaskResponseModel(
     message: "",
     task: TaskModel(
       id: 0,
@@ -21,6 +21,8 @@ class AddTaskResponseModel extends Equatable {
       startDateTime: "",
       endDateTime: "",
       status: "",
+      canEdit: false,
+      canDelete: false,
     ),
   );
 
