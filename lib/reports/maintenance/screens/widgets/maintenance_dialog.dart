@@ -22,7 +22,6 @@ class _MaintenanceDialogState extends State<MaintenanceDialog> {
     formKey = GlobalKey<FormState>();
     autovalidateMode = ValueNotifier<AutovalidateMode>(
       AutovalidateMode.disabled,
-
     );
     widget.maintenanceCubit.initForAdd();
     super.initState();
@@ -47,54 +46,59 @@ class _MaintenanceDialogState extends State<MaintenanceDialog> {
                     return Form(
                       key: formKey,
                       autovalidateMode: mode,
-                      child: SingleChildScrollView(
+                      child: CustomScrollView(
+                        shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 20.0),
-                            const Center(
-                              child: Text(
-                                "اضافة صيانة",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(height: 20.0),
+                                const Center(
+                                  child: Text(
+                                    "اضافة صيانة",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 40.0),
+                                const Text(
+                                  "يمكنك اضافة القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 10.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 20.0),
+                                const Text(
+                                  "عنوان",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 5.0),
+                                CustomTextFormField(
+                                  hintText: "عنوان",
+                                  onSaved: (value) {
+                                    context.read<MaintenanceCubit>().updateName(
+                                      value!,
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 20.0),
+                                MaintenanceDialogBody(
+                                  autovalidateMode: autovalidateMode,
+                                  formKey: formKey,
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 40.0),
-                            const Text(
-                              "يمكنك اضافة القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 10.0,
-                              ),
-                            ),
-                            const SizedBox(height: 20.0),
-                            const Text(
-                              "عنوان",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12.0,
-                              ),
-                            ),
-                            const SizedBox(height: 5.0),
-                            CustomTextFormField(
-                              hintText: "عنوان",
-                              onSaved: (value) {
-                                context.read<MaintenanceCubit>().updateName(
-                                  value!,
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 20.0),
-                            MaintenanceDialogBody(
-                              autovalidateMode: autovalidateMode,
-                              formKey: formKey,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },

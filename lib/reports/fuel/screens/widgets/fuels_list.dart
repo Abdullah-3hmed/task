@@ -81,14 +81,14 @@ class FuelsList extends StatelessWidget {
             } else {
               return state.fuels.isEmpty
                   ? const Center(
-                child: Text(
-                  "لم تقم بأى عمليات تعبئة وقود حتى الأن",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
+                      child: Text(
+                        "لم تقم بأى عمليات تعبئة وقود حتى الأن",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
                   : _buildFuelList(fuels: state.fuels.values.toList());
             }
           default:

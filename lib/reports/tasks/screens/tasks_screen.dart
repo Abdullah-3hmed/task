@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/core/services/service_locator.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/no_internet_widget.dart';
 import 'package:task/reports/tasks/cubit/tasks_cubit.dart';
@@ -52,7 +53,7 @@ class _TasksScreenState extends State<TasksScreen> {
                             backgroundColor: Colors.grey[300],
                             child: const Icon(
                               Icons.add,
-                              color: Color(0xFF5B8C51),
+                              color: AssetsManager.primaryColor,
                               size: 20.0,
                             ),
                           ),
@@ -62,7 +63,7 @@ class _TasksScreenState extends State<TasksScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.w900,
                               fontSize: 14.0,
-                              color: Color(0xFF5B8C51),
+                              color: AssetsManager.primaryColor,
                             ),
                           ),
                         ],
@@ -91,8 +92,8 @@ class _TasksScreenState extends State<TasksScreen> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         selectedFontSize: 12.0,
-        selectedItemColor: const Color(0xFF5B8C51),
-        unselectedItemColor: const Color(0xFF5B8C51),
+        selectedItemColor: AssetsManager.primaryColor,
+        unselectedItemColor: AssetsManager.primaryColor,
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 12.0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/core/widgets/custom_text_form_field.dart';
@@ -142,7 +143,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                           value: widget.cubit,
                           child: BlocConsumer<TasksCubit, TasksState>(
                             listenWhen: (prev, curr) =>
-                            prev.addTaskState != curr.addTaskState,
+                                prev.addTaskState != curr.addTaskState,
                             listener: (context, state) {
                               if (state.addTaskState.isError) {
                                 showToast(
@@ -155,14 +156,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                                 showToast(
                                   context: context,
                                   message:
-                                  state.addAndEditTaskResponseModel.message,
+                                      state.addAndEditTaskResponseModel.message,
                                   state: ToastStates.success,
                                 );
                                 Navigator.pop(context);
                               }
                             },
                             buildWhen: (prev, curr) =>
-                            prev.addTaskState != curr.addTaskState,
+                                prev.addTaskState != curr.addTaskState,
                             builder: (context, state) {
                               return Expanded(
                                 child: PrimaryButton(
@@ -172,13 +173,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
                                       final addTaskRequestModel =
-                                      AddTaskRequestModel(
-                                        name: name,
-                                        description: description,
-                                        date: dateController.text,
-                                      );
+                                          AddTaskRequestModel(
+                                            name: name,
+                                            description: description,
+                                            date: dateController.text,
+                                          );
                                       widget.cubit.addTask(
-                                        addTaskRequestModel: addTaskRequestModel,
+                                        addTaskRequestModel:
+                                            addTaskRequestModel,
                                       );
                                     } else {
                                       setState(() {
@@ -196,12 +198,11 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                           child: PrimaryButton(
                             text: "الغاء",
                             onPressed: () => Navigator.pop(context),
-                            borderColor: const Color(0xFF5B8C51),
+                            borderColor: AssetsManager.primaryColor,
                             backgroundColor: Colors.white,
-                            textColor: const Color(0xFF5B8C51),
+                            textColor: AssetsManager.primaryColor,
                           ),
                         ),
-
                       ],
                     ),
                   ],
@@ -223,7 +224,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   }
 
   Future<void> _formatData(BuildContext context) async {
-       DateTime? pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -241,27 +242,16 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
 
       String formatDateTime(DateTime dt) {
         final year = dt.year.toString();
-        final month = dt.month.toString().padLeft(
-          2,
-          '0',
-        );
+        final month = dt.month.toString().padLeft(2, '0');
         final day = dt.day.toString().padLeft(2, '0');
         final hour = dt.hour.toString().padLeft(2, '0');
-        final minute = dt.minute.toString().padLeft(
-          2,
-          '0',
-        );
-        final second = dt.second.toString().padLeft(
-          2,
-          '0',
-        );
+        final minute = dt.minute.toString().padLeft(2, '0');
+        final second = dt.second.toString().padLeft(2, '0');
 
         return "$year-$month-$day $hour:$minute:$second";
       }
 
-      dateController.text = formatDateTime(
-        finalDateTime,
-      );
+      dateController.text = formatDateTime(finalDateTime);
     }
   }
 }

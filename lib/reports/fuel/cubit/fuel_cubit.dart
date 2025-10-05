@@ -55,7 +55,7 @@ class FuelCubit extends Cubit<FuelState> {
       (fuelModel) => emit(
         state.copyWith(
           addFuelState: RequestStatus.success,
-          fuels: {...state.fuels,fuelModel.id: fuelModel, },
+          fuels: {...state.fuels, fuelModel.id: fuelModel},
         ),
       ),
     );

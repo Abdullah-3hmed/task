@@ -39,7 +39,7 @@ class MaintenanceItemModel extends Equatable {
   final String description;
 
   const MaintenanceItemModel({
-     this.id = 0,
+    this.id = 0,
     required this.description,
     required this.carSpartId,
   });
@@ -50,12 +50,10 @@ class MaintenanceItemModel extends Equatable {
         carSpartId: json["car_spart_id"] ?? 0,
         description: json["description"] ?? "",
       );
-Map<String, dynamic> toJson() {
-    return {
-      "car_spart_id": carSpartId,
-      "description": description,
-    };
+  Map<String, dynamic> toJson() {
+    return {"car_spart_id": carSpartId, "description": description};
   }
+
   @override
   List<Object> get props => [id, description, carSpartId];
 }

@@ -78,7 +78,14 @@ class MaintenanceItemFields extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: TextButton(
               onPressed: () => cubit.removeMaintenanceItem(index),
-              child: const Text("حذف", style: TextStyle(color: Colors.red)),
+              child: const Text(
+                "حذف",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
         const SizedBox(height: 18.0),

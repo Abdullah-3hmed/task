@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/core/enums/request_edit_delete_enum.dart';
 import 'package:task/core/utils/app_constants.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/widgets/custom_dialog.dart';
 import 'package:task/core/widgets/custom_dismissible.dart';
 import 'package:task/core/widgets/primary_button.dart';
@@ -155,9 +156,10 @@ class _TaskListItemState extends State<TaskListItem> {
                                         PrimaryButton(
                                           text: "انهاء",
                                           onPressed: () {},
-                                          textColor: const Color(0xFF5B8C51),
+                                          textColor: AssetsManager.primaryColor,
                                           height: 40,
-                                          borderColor: const Color(0xFF5B8C51),
+                                          borderColor:
+                                              AssetsManager.primaryColor,
                                           backgroundColor: Colors.white,
                                         ),
                                       ],

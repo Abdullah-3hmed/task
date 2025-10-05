@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/reports/fuel/cubit/fuel_cubit.dart';
@@ -176,9 +177,9 @@ class _EditFuelDialogState extends State<EditFuelDialog> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              borderColor: const Color(0xFF5B8C51),
+                              borderColor: AssetsManager.primaryColor,
                               backgroundColor: Colors.white,
-                              textColor: const Color(0xFF5B8C51),
+                              textColor: AssetsManager.primaryColor,
                             ),
                           ),
                         ],

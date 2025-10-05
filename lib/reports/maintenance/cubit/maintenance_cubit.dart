@@ -228,9 +228,10 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
         .toSet();
 
     return state.spareParts
-        .where((part) =>
-    !selectedIds.contains(part.id) || part.id == currentSelectedId)
+        .where(
+          (part) =>
+              !selectedIds.contains(part.id) || part.id == currentSelectedId,
+        )
         .toList();
   }
-
 }

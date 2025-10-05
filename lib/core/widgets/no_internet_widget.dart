@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:task/core/utils/assets_manager.dart';
 
 class NoInternetWidget extends StatelessWidget {
   const NoInternetWidget({
@@ -19,7 +20,11 @@ class NoInternetWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
-          const Icon(Icons.wifi_off, size: 100.0, color: Color(0xFF5B8C51)),
+          const Icon(
+            Icons.wifi_off,
+            size: 100.0,
+            color: AssetsManager.primaryColor,
+          ),
           const SizedBox(height: 24.0),
           Text(
             errorMessage,
@@ -36,7 +41,7 @@ class NoInternetWidget extends StatelessWidget {
           MaterialButton(
             height: 50,
             minWidth: 200,
-            color: const Color(0xFF5B8C51),
+            color: AssetsManager.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),

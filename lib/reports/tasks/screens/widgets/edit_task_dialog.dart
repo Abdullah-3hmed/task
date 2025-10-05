@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
 import 'package:task/core/widgets/custom_text_form_field.dart';
@@ -123,7 +124,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                             },
                           ),
                           const SizedBox(height: 20.0),
-                          Text(
+                          const Text(
                             "تفاصيل المهمة",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
@@ -206,9 +207,9 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                           child: PrimaryButton(
                             text: "الغاء",
                             onPressed: () => Navigator.pop(context),
-                            borderColor: const Color(0xFF5B8C51),
+                            borderColor: AssetsManager.primaryColor,
                             backgroundColor: Colors.white,
-                            textColor: const Color(0xFF5B8C51),
+                            textColor: AssetsManager.primaryColor,
                           ),
                         ),
                       ],

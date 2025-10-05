@@ -14,4 +14,3 @@ class AddMaintenanceRequestModel extends Equatable {
   @override
   List<Object> get props => [name, items];
 }
-
