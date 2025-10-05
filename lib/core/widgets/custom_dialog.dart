@@ -4,7 +4,7 @@ import 'package:task/core/enums/request_status.dart';
 import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
-import 'package:task/shared/report_cubit/app_state.dart';
+import 'package:task/shared/report_cubit/report_state.dart';
 import 'package:task/shared/report_cubit/report_cubit.dart';
 
 class CustomDialog extends StatelessWidget {

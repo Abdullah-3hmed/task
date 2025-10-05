@@ -4,7 +4,7 @@ import 'package:task/core/enums/request_status.dart';
 import 'package:task/reports/fuel/repo/fuel_repo.dart';
 import 'package:task/reports/maintenance/repo/maintenance_repo.dart';
 import 'package:task/reports/tasks/repo/tasks_repo.dart';
-import 'package:task/shared/report_cubit/app_state.dart';
+import 'package:task/shared/report_cubit/report_state.dart';
 
 class ReportCubit extends Cubit<ReportState> {
   ReportCubit({
