@@ -30,7 +30,7 @@ class MaintenanceList extends StatelessWidget {
     return BlocConsumer<MaintenanceCubit, MaintenanceState>(
       listenWhen: (prev, curr) =>
           prev.maintenanceState != curr.maintenanceState ||
-          prev.editMaintenanceState != curr.editMaintenanceState,
+          prev.deleteMaintenanceState != curr.deleteMaintenanceState,
       listener: (context, state) {
         if (state.maintenanceState.isError) {
           showToast(
@@ -39,14 +39,14 @@ class MaintenanceList extends StatelessWidget {
             state: ToastStates.error,
           );
         }
-        if (state.editMaintenanceState.isError) {
+        if (state.deleteMaintenanceState.isError) {
           showToast(
             context: context,
             message: state.maintenanceErrorMessage,
             state: ToastStates.error,
           );
         }
-        if (state.editMaintenanceState.isSuccess) {
+        if (state.deleteMaintenanceState.isSuccess) {
           showToast(
             context: context,
             message: state.deleteMaintenanceMessage,
@@ -64,7 +64,17 @@ class MaintenanceList extends StatelessWidget {
               child: _buildMaintenanceList(maintenances: dummyMaintenances),
             );
           case RequestStatus.success:
-            return _buildMaintenanceList(maintenances: state.maintenances);
+            return state.maintenances.isEmpty
+                ? const Center(
+                    child: Text(
+                      "لم تقم بأى عملية صيانة حتى الأن",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : _buildMaintenanceList(maintenances: state.maintenances);
           case RequestStatus.error:
             if (!state.isConnected) {
               return NoInternetWidget(
@@ -75,7 +85,17 @@ class MaintenanceList extends StatelessWidget {
                 errorMessage: state.maintenanceErrorMessage,
               );
             }
-            return _buildMaintenanceList(maintenances: state.maintenances);
+            return state.maintenances.isEmpty
+                ? const Center(
+                    child: Text(
+                      "لم تقم بأى عملية صيانة حتى الأن",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : _buildMaintenanceList(maintenances: state.maintenances);
           default:
             return const SizedBox.shrink();
         }
@@ -89,6 +109,7 @@ class MaintenanceList extends StatelessWidget {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) => MaintenanceListItem(
+        key: ValueKey(maintenances[index].id),
         maintenanceModel: maintenances[index],
         index: index,
       ),

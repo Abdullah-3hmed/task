@@ -5,6 +5,7 @@ import 'package:task/reports/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/reports/maintenance/data/add_maintenance_request_model.dart';
 import 'package:task/reports/maintenance/data/edit_maintenance_request_model.dart';
 import 'package:task/reports/maintenance/data/maintenance_model.dart';
+import 'package:task/reports/maintenance/data/spare_parts_model.dart';
 import 'package:task/reports/maintenance/repo/maintenance_repo.dart';
 
 class MaintenanceCubit extends Cubit<MaintenanceState> {
@@ -43,7 +44,6 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
         state.copyWith(
           maintenanceState: RequestStatus.success,
           maintenances: maintenances,
-          maintenanceItems: [AddMaintenanceItemModel()],
         ),
       ),
     );
@@ -103,7 +103,10 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
     );
   }
 
-  Future<void> editMaintenance({required int maintenanceId}) async {
+  Future<void> editMaintenance({
+    required int maintenanceId,
+    required int index,
+  }) async {
     emit(state.copyWith(editMaintenanceState: RequestStatus.loading));
     final EditMaintenanceRequestModel editMaintenanceRequestModel =
         EditMaintenanceRequestModel(
@@ -128,17 +131,13 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
       ),
       (addMaintenanceResponseModel) {
         final newMaintenances = [...state.maintenances];
-        for (int i = 0; i < newMaintenances.length; i++) {
-          if (newMaintenances[i].id == maintenanceId) {
-            newMaintenances[i] = addMaintenanceResponseModel.maintenanceModel;
-            break;
-          }
-        }
+        newMaintenances[index] = addMaintenanceResponseModel.maintenanceModel;
         emit(
           state.copyWith(
             editMaintenanceState: RequestStatus.success,
             addMaintenanceMessage: addMaintenanceResponseModel.message,
             maintenances: newMaintenances,
+            spareParts: state.spareParts,
           ),
         );
       },
@@ -146,25 +145,28 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
   }
 
   Future<void> deleteMaintenance({required int index, required int id}) async {
-    emit(state.copyWith(deleteMaintenanceState: RequestStatus.loading));
+    final MaintenanceState oldState = state;
+    final newMaintenances = [...state.maintenances]..removeAt(index);
+    emit(
+      state.copyWith(
+        deleteMaintenanceState: RequestStatus.loading,
+        maintenances: newMaintenances,
+      ),
+    );
     final result = await maintenanceRepo.deleteMaintenance(id: id);
     result.fold(
       (failure) => emit(
-        state.copyWith(
+        oldState.copyWith(
           deleteMaintenanceState: RequestStatus.error,
           maintenanceErrorMessage: failure.errorMessage,
         ),
       ),
-      (message) {
-        final newMaintenances = [...state.maintenances]..removeAt(index);
-        emit(
-          state.copyWith(
-            deleteMaintenanceState: RequestStatus.success,
-            deleteMaintenanceMessage: message,
-            maintenances: newMaintenances,
-          ),
-        );
-      },
+      (message) => emit(
+        state.copyWith(
+          deleteMaintenanceState: RequestStatus.success,
+          deleteMaintenanceMessage: message,
+        ),
+      ),
     );
   }
 
@@ -197,17 +199,18 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
     emit(state.copyWith(maintenanceItems: newItems));
   }
 
+  void initForAdd() =>
+      emit(state.copyWith(maintenanceItems: [AddMaintenanceItemModel()]));
+
   void initForEdit(MaintenanceModel model) {
-    final sparePartIds = state.spareParts.map((p) => p.id).toSet();
-
-    final items = model.items.map((m) {
-      final id = sparePartIds.contains(m.carSpartId) ? m.carSpartId : null;
-      return AddMaintenanceItemModel(
-        carSpartId: id,
-        description: m.description,
-      );
-    }).toList();
-
+    final items = model.items
+        .map(
+          (m) => AddMaintenanceItemModel(
+            carSpartId: m.carSpartId == 0 ? null : m.carSpartId,
+            description: m.description,
+          ),
+        )
+        .toList();
     emit(
       state.copyWith(
         maintenanceName: model.name,
@@ -216,6 +219,18 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
             : [AddMaintenanceItemModel()],
       ),
     );
+  }
+
+  List<SparePartsModel> getAvailableSpareParts({int? currentSelectedId}) {
+    final selectedIds = state.maintenanceItems
+        .map((item) => item.carSpartId)
+        .whereType<int>()
+        .toSet();
+
+    return state.spareParts
+        .where((part) =>
+    !selectedIds.contains(part.id) || part.id == currentSelectedId)
+        .toList();
   }
 
 }

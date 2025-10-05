@@ -49,6 +49,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
           context,
           maintenanceCubit: context.read<MaintenanceCubit>(),
           maintenanceModel: widget.maintenanceModel,
+          index: widget.index,
         );
       },
       onDelete: () async {

@@ -67,7 +67,17 @@ class TasksList extends StatelessWidget {
               ),
             );
           case RequestStatus.success:
-            return _buildTasksList(tasks: state.tasks.values.toList());
+            return state.tasks.isEmpty
+                ? const Center(
+                    child: Text(
+                      "ليس لديك مهمات فى الوقت الحالى",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : _buildTasksList(tasks: state.tasks.values.toList());
           case RequestStatus.error:
             if (!state.isConnected) {
               return NoInternetWidget(
@@ -77,7 +87,17 @@ class TasksList extends StatelessWidget {
                 },
               );
             }
-            return _buildTasksList(tasks: state.tasks.values.toList());
+            return state.tasks.isEmpty
+                ? const Center(
+                    child: Text(
+                      "ليس لديك مهمات فى الوقت الحالى",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : _buildTasksList(tasks: state.tasks.values.toList());
           default:
             return const SizedBox.shrink();
         }
@@ -89,7 +109,8 @@ class TasksList extends StatelessWidget {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       cacheExtent: 200.0,
-      itemBuilder: (context, index) => TaskListItem(task: tasks[index]),
+      itemBuilder: (context, index) =>
+          TaskListItem(key: ValueKey(tasks[index].id), task: tasks[index]),
       separatorBuilder: (_, __) => const SizedBox(height: 16.0),
       itemCount: tasks.length,
     );

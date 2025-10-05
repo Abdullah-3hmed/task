@@ -115,6 +115,14 @@ class _TaskListItemState extends State<TaskListItem> {
                             color: Colors.black.withValues(alpha: 37),
                           ),
                         ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          "الحالة: ${widget.task.status}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                          ),
+                        ),
                         Text(
                           widget.task.description,
                           style: const TextStyle(

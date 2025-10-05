@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/widgets/custom_text_form_field.dart';
 import 'package:task/reports/maintenance/cubit/maintenance_cubit.dart';
+import 'package:task/reports/maintenance/cubit/maintenance_state.dart';
 import 'package:task/reports/maintenance/data/add_maintenance_item_model.dart';
 import 'package:task/reports/maintenance/data/maintenance_model.dart';
 import 'package:task/reports/maintenance/data/spare_parts_model.dart';
@@ -42,42 +43,51 @@ class _EditMaintenanceItemFieldsState extends State<EditMaintenanceItemFields> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<MaintenanceCubit>();
-    final spareParts = cubit.state.spareParts;
-    final validCarSpartId = spareParts.any((part) => part.id == widget.item.carSpartId)
-        ? widget.item.carSpartId
-        : null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _Label("القطع"),
         const SizedBox(height: 5.0),
-        DropdownButtonFormField<int>(
-          initialValue:validCarSpartId,
-          icon: const Icon(
-            CupertinoIcons.chevron_down,
-            size: 16.0,
-            color: Colors.black54,
-          ),
-          decoration: _dropdownDecoration,
-          dropdownColor: Colors.white,
-          items: context
-              .select<MaintenanceCubit, List<SparePartsModel>>(
-                (cubit) => cubit.state.spareParts,
-          )
-              .map(
-                (part) => DropdownMenuItem<int>(
-              value: part.id,
-              child: Text(part.name),
-            ),
-          )
-              .toList(),
-          validator: (val) =>
-          (val == null || val == 0) ? "الرجاء اختيار قطعة" : null,
-          onChanged: (value) {
-            final updated = widget.item.copyWith(carSpartId: value);
-            cubit.updateMaintenanceItems(widget.index, updated);
+        BlocBuilder<MaintenanceCubit, MaintenanceState>(
+          buildWhen: (prev, curr) => prev.spareParts != curr.spareParts,
+          builder: (context, state) {
+            final availableParts = cubit.getAvailableSpareParts(
+              currentSelectedId: widget.item.carSpartId,
+            );
+
+            return DropdownButtonFormField<int>(
+              key: ValueKey(
+                'dropdown_${widget.index}_${widget.item.carSpartId}',
+              ),
+              initialValue: widget.item.carSpartId == 0
+                  ? null
+                  : widget.item.carSpartId,
+              icon: const SizedBox.shrink(),
+              decoration: _dropdownDecoration.copyWith(
+                prefixIcon: const Icon(
+                  CupertinoIcons.chevron_down,
+                  size: 16.0,
+                  color: Colors.black54,
+                ),
+              ),
+              dropdownColor: Colors.white,
+              items: availableParts.map((part) {
+                return DropdownMenuItem<int>(
+                  value: part.id,
+                  child: Text(part.name, textAlign: TextAlign.right),
+                );
+              }).toList(),
+              validator: (val) =>
+                  (val == null || val == 0) ? "الرجاء اختيار قطعة" : null,
+              onChanged: (value) {
+                final updated = widget.item.copyWith(carSpartId: value);
+                cubit.updateMaintenanceItems(widget.index, updated);
+              },
+            );
           },
         ),
+
         const SizedBox(height: 20.0),
         const _Label("تفاصيل"),
         const SizedBox(height: 16.0),

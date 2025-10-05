@@ -11,10 +11,12 @@ class EditMaintenanceDialog extends StatefulWidget {
     super.key,
     required this.maintenanceCubit,
     required this.maintenanceModel,
+    required this.index,
   });
 
   final MaintenanceCubit maintenanceCubit;
   final MaintenanceModel maintenanceModel;
+  final int index;
 
   @override
   State<EditMaintenanceDialog> createState() => _EditMaintenanceDialogState();
@@ -35,12 +37,14 @@ class _EditMaintenanceDialogState extends State<EditMaintenanceDialog> {
     nameController = TextEditingController(text: widget.maintenanceModel.name);
     super.initState();
   }
-@override
+
+  @override
   void dispose() {
     nameController.dispose();
     autovalidateMode.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -62,53 +66,54 @@ class _EditMaintenanceDialogState extends State<EditMaintenanceDialog> {
                       autovalidateMode: mode,
                       child: SingleChildScrollView(
                         physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20.0),
-                      const Center(
-                        child: Text(
-                          "تعديل صيانة",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20.0),
+                            const Center(
+                              child: Text(
+                                "تعديل صيانة",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 40.0),
+                            const Text(
+                              "يمكنك تعديل القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 10.0,
+                              ),
+                            ),
+                            const SizedBox(height: 20.0),
+                            const Text(
+                              "عنوان",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                            const SizedBox(height: 5.0),
+                            CustomTextFormField(
+                              controller: nameController,
+                              hintText: "عنوان",
+                              onSaved: (value) {
+                                context.read<MaintenanceCubit>().updateName(
+                                  value!,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            EditMaintenanceDialogBody(
+                              autovalidateMode: autovalidateMode,
+                              formKey: formKey,
+                              maintenanceId: widget.maintenanceModel.id,
+                              index: widget.index,
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 40.0),
-                      const Text(
-                        "يمكنك تعديل القطع التي قومت بصيانتها عن طريق نموذج التعبئة التالي",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10.0,
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      const Text(
-                        "عنوان",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12.0,
-                        ),
-                      ),
-                      const SizedBox(height: 5.0),
-                      CustomTextFormField(
-                        controller: nameController,
-                        hintText: "عنوان",
-                        onSaved: (value) {
-                          context.read<MaintenanceCubit>().updateName(
-                            value!,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      EditMaintenanceDialogBody(
-                        autovalidateMode: autovalidateMode,
-                        formKey: formKey,
-                        maintenanceId: widget.maintenanceModel.id,
-                      ),
-                    ],
-                  ),
                       ),
                     );
                   },
@@ -134,12 +139,14 @@ void showEditMaintenanceDialog(
   BuildContext context, {
   required MaintenanceCubit maintenanceCubit,
   required MaintenanceModel maintenanceModel,
+      required int index,
 }) {
   showDialog(
     context: context,
     builder: (_) => EditMaintenanceDialog(
       maintenanceCubit: maintenanceCubit,
       maintenanceModel: maintenanceModel,
+      index: index,
     ),
   );
 }

@@ -12,12 +12,15 @@ class EditMaintenanceDialogBody extends StatelessWidget {
   const EditMaintenanceDialogBody({
     super.key,
     required this.autovalidateMode,
-    required this.formKey, required this.maintenanceId,
+    required this.formKey,
+    required this.maintenanceId,
+    required this.index,
   });
 
   final ValueNotifier<AutovalidateMode> autovalidateMode;
   final GlobalKey<FormState> formKey;
   final int maintenanceId;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,8 @@ class EditMaintenanceDialogBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BlocBuilder<MaintenanceCubit, MaintenanceState>(
-          buildWhen: (prev, curr) => prev.maintenanceItems != curr.maintenanceItems,
+          buildWhen: (prev, curr) =>
+              prev.maintenanceItems != curr.maintenanceItems,
           builder: (context, state) {
             return ListView.builder(
               shrinkWrap: true,
@@ -57,7 +61,12 @@ class EditMaintenanceDialogBody extends StatelessWidget {
           spacing: 10.0,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _SaveButton(formKey: formKey, autovalidateMode: autovalidateMode, maintenanceId: maintenanceId),
+            _SaveButton(
+              formKey: formKey,
+              autovalidateMode: autovalidateMode,
+              maintenanceId: maintenanceId,
+              index: index,
+            ),
             Expanded(
               child: PrimaryButton(
                 text: "الغاء",
@@ -75,17 +84,23 @@ class EditMaintenanceDialogBody extends StatelessWidget {
 }
 
 class _SaveButton extends StatelessWidget {
-  const _SaveButton({required this.formKey, required this.autovalidateMode, required this.maintenanceId});
+  const _SaveButton({
+    required this.formKey,
+    required this.autovalidateMode,
+    required this.maintenanceId,
+    required this.index,
+  });
 
   final GlobalKey<FormState> formKey;
   final ValueNotifier<AutovalidateMode> autovalidateMode;
   final int maintenanceId;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MaintenanceCubit, MaintenanceState>(
       listenWhen: (prev, curr) =>
-      prev.editMaintenanceState != curr.editMaintenanceState,
+          prev.editMaintenanceState != curr.editMaintenanceState,
       listener: (context, state) {
         if (state.editMaintenanceState.isError) {
           showToast(
@@ -97,14 +112,14 @@ class _SaveButton extends StatelessWidget {
         if (state.editMaintenanceState.isSuccess) {
           showToast(
             context: context,
-            message:"تم تعديل البيانات بنجاح",
+            message: "تم تعديل البيانات بنجاح",
             state: ToastStates.success,
           );
           Navigator.pop(context);
         }
       },
       buildWhen: (prev, curr) =>
-      prev.editMaintenanceState != curr.editMaintenanceState,
+          prev.editMaintenanceState != curr.editMaintenanceState,
       builder: (context, state) {
         return Expanded(
           child: PrimaryButton(
@@ -115,7 +130,8 @@ class _SaveButton extends StatelessWidget {
                 formKey.currentState!.save();
 
                 context.read<MaintenanceCubit>().editMaintenance(
-                  maintenanceId:maintenanceId ,
+                  maintenanceId: maintenanceId,
+                  index: index,
                 );
               } else {
                 autovalidateMode.value = AutovalidateMode.always;

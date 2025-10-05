@@ -59,7 +59,17 @@ class FuelsList extends StatelessWidget {
           case RequestStatus.loading:
             return Skeletonizer(child: _buildFuelList(fuels: dummyFuels));
           case RequestStatus.success:
-            return _buildFuelList(fuels: state.fuels.values.toList());
+            return state.fuels.isEmpty
+                ? const Center(
+                    child: Text(
+                      "لم تقم بأى عمليات تعبئة وقود حتى الأن",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : _buildFuelList(fuels: state.fuels.values.toList());
           case RequestStatus.error:
             if (!state.isConnected) {
               return NoInternetWidget(
@@ -69,7 +79,17 @@ class FuelsList extends StatelessWidget {
                 errorMessage: state.fuelErrorMessage,
               );
             } else {
-              return _buildFuelList(fuels: state.fuels.values.toList());
+              return state.fuels.isEmpty
+                  ? const Center(
+                child: Text(
+                  "لم تقم بأى عمليات تعبئة وقود حتى الأن",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )
+                  : _buildFuelList(fuels: state.fuels.values.toList());
             }
           default:
             return const SizedBox.shrink();

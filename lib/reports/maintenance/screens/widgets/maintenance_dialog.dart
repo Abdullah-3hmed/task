@@ -22,7 +22,9 @@ class _MaintenanceDialogState extends State<MaintenanceDialog> {
     formKey = GlobalKey<FormState>();
     autovalidateMode = ValueNotifier<AutovalidateMode>(
       AutovalidateMode.disabled,
+
     );
+    widget.maintenanceCubit.initForAdd();
     super.initState();
   }
 

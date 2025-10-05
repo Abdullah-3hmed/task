@@ -47,6 +47,7 @@ class CustomTextFormField extends StatelessWidget {
       textAlign: TextAlign.right,
       textInputAction: textInputAction ?? TextInputAction.next,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         suffixIcon: suffixIcon,
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Color(0xFFE8ECF4), width: 1.05),
