@@ -145,6 +145,7 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
   }
 
   Future<void> deleteMaintenance({required int index, required int id}) async {
+    //if(index < 0 || index >= state.maintenances.length) return;
     final MaintenanceState oldState = state;
     final newMaintenances = [...state.maintenances]..removeAt(index);
     emit(

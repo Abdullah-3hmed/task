@@ -83,7 +83,7 @@ class TasksList extends StatelessWidget {
               return NoInternetWidget(
                 errorMessage: state.taskErrorMessage,
                 onPressed: () {
-                  context.read<TasksCubit>().getUserTasks(userId: 1);
+                  context.read<TasksCubit>().getUserTasks();
                 },
               );
             }

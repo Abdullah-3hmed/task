@@ -8,7 +8,7 @@ import 'package:task/reports/tasks/data/start_and_end_task_request_model.dart';
 import 'package:task/reports/tasks/data/task_model.dart';
 
 abstract class TasksRepo {
-  Future<Either<Failure, List<TaskModel>>> getUserTasks({required int userId});
+  Future<Either<Failure, List<TaskModel>>> getUserTasks();
 
   Future<Either<Failure, AddAndEditTaskResponseModel>> addTask({
     required AddTaskRequestModel addTaskRequestModel,
@@ -25,4 +25,8 @@ abstract class TasksRepo {
     required EditTaskRequestModel editTaskRequestModel,
   });
   Future<Either<Failure, String>> deleteTask({required int taskId});
+  Future<Either<Failure, String>> requestEditDeleteTask({
+    required int taskId,
+    required RequestEditDeleteEnum requestEditDelete,
+  });
 }

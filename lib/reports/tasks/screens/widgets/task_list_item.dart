@@ -137,7 +137,7 @@ class _TaskListItemState extends State<TaskListItem> {
                           valueListenable: _isExpanded,
                           builder: (context, isExpanded, _) {
                             return AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 250),
                               curve: Curves.easeIn,
                               child: isExpanded
                                   ? Row(

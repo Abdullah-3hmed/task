@@ -8,7 +8,6 @@ import 'package:task/reports/maintenance/data/maintenance_model.dart';
 import 'package:task/reports/maintenance/screens/widgets/edit_maintenance_dialog.dart';
 import 'package:task/reports/maintenance/screens/widgets/maintenance_dialog.dart';
 import 'package:task/shared/report_cubit/report_cubit.dart';
-import 'package:task/shared/report_repo/report_repo.dart';
 
 class MaintenanceListItem extends StatefulWidget {
   const MaintenanceListItem({

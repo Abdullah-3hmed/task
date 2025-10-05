@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:task/core/enums/request_edit_delete_enum.dart';
 import 'package:task/core/error/failures.dart';
 import 'package:task/core/error/server_exception.dart';
 import 'package:task/core/network/api_constants.dart';
@@ -77,4 +78,20 @@ class FuelRepoImpl implements FuelRepo {
           throw ServerException(errorMessage: response.data);
         }
       });
+  @override
+  Future<Either<Failure, String>> requestEditDeleteFuel({
+    required int fuelId,
+    required RequestEditDeleteEnum requestEditDelete,
+  }) async => safeApiCall<String>(() async {
+    final response = await dioHelper.post(
+      url: ApiConstants.requestEditDeleteFuelEndPoint,
+      data: {"id": fuelId, "request_type": requestEditDelete.toJson()},
+      headers: {"Authorization": "Bearer ${AppConstants.token}"},
+    );
+    if (response.statusCode == 200) {
+      return response.data["message"];
+    } else {
+      throw ServerException(errorMessage: response.data);
+    }
+  });
 }

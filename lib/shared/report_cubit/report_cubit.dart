@@ -1,19 +1,28 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_edit_delete_enum.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/reports/fuel/repo/fuel_repo.dart';
+import 'package:task/reports/maintenance/repo/maintenance_repo.dart';
+import 'package:task/reports/tasks/repo/tasks_repo.dart';
 import 'package:task/shared/report_cubit/app_state.dart';
-import 'package:task/shared/report_repo/report_repo.dart';
 
 class ReportCubit extends Cubit<ReportState> {
-  ReportCubit({required this.reportRepo}) : super(const ReportState());
-  final ReportRepo reportRepo;
+  ReportCubit({
+    required this.tasksRepo,
+    required this.fuelRepo,
+    required this.maintenanceRepo,
+  }) : super(const ReportState());
+
+  final TasksRepo tasksRepo;
+  final FuelRepo fuelRepo;
+  final MaintenanceRepo maintenanceRepo;
 
   Future<void> requestEditDeleteTask({
     required int id,
     required RequestEditDeleteEnum requestEditDelete,
   }) async {
     emit(state.copyWith(requestEditDeleteState: RequestStatus.loading));
-    final result = await reportRepo.requestEditDeleteTask(
+    final result = await tasksRepo.requestEditDeleteTask(
       taskId: id,
       requestEditDelete: requestEditDelete,
     );
@@ -38,7 +47,7 @@ class ReportCubit extends Cubit<ReportState> {
     required RequestEditDeleteEnum requestEditDelete,
   }) async {
     emit(state.copyWith(requestEditDeleteState: RequestStatus.loading));
-    final result = await reportRepo.requestEditDeleteFuel(
+    final result = await fuelRepo.requestEditDeleteFuel(
       fuelId: id,
       requestEditDelete: requestEditDelete,
     );
@@ -63,7 +72,7 @@ class ReportCubit extends Cubit<ReportState> {
     required RequestEditDeleteEnum requestEditDelete,
   }) async {
     emit(state.copyWith(requestEditDeleteState: RequestStatus.loading));
-    final result = await reportRepo.requestEditDeleteMaintenance(
+    final result = await maintenanceRepo.requestEditDeleteMaintenance(
       fuelId: id,
       requestEditDelete: requestEditDelete,
     );

@@ -10,7 +10,6 @@ import 'package:task/reports/tasks/cubit/tasks_cubit.dart';
 import 'package:task/reports/tasks/repo/tasks_repo.dart';
 import 'package:task/reports/tasks/repo/tasks_repo_impl.dart';
 import 'package:task/shared/report_cubit/report_cubit.dart';
-import 'package:task/shared/report_repo/report_repo.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -35,11 +34,13 @@ class ServiceLocator {
     getIt.registerFactory<FuelCubit>(
       () => FuelCubit(fuelRepo: getIt.get<FuelRepo>()),
     );
-    getIt.registerLazySingleton<ReportRepo>(
-      () => ReportRepo(dioHelper: getIt.get<DioHelper>()),
-    );
+
     getIt.registerFactory<ReportCubit>(
-      () => ReportCubit(reportRepo: getIt.get<ReportRepo>()),
+      () => ReportCubit(
+        tasksRepo: getIt.get<TasksRepo>(),
+        fuelRepo: getIt.get<FuelRepo>(),
+        maintenanceRepo: getIt.get<MaintenanceRepo>(),
+      ),
     );
   }
 }

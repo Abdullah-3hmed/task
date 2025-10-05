@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:task/core/enums/request_edit_delete_enum.dart';
 import 'package:task/core/error/failures.dart';
 import 'package:task/reports/fuel/data/fuel_model.dart';
 
@@ -11,5 +12,11 @@ abstract class FuelRepo {
     required int fuelId,
     required double numberOfLiters,
   });
+
   Future<Either<Failure, String>> deleteFuel({required int fuelId});
+
+  Future<Either<Failure, String>> requestEditDeleteFuel({
+    required int fuelId,
+    required RequestEditDeleteEnum requestEditDelete,
+  });
 }

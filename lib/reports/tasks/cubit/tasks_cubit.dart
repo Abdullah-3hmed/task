@@ -12,9 +12,9 @@ class TasksCubit extends Cubit<TasksState> {
   TasksCubit({required this.tasksRepo}) : super(const TasksState());
   final TasksRepo tasksRepo;
 
-  Future<void> getUserTasks({required int userId}) async {
+  Future<void> getUserTasks() async {
     emit(state.copyWith(tasksState: RequestStatus.loading, isConnected: true));
-    final result = await tasksRepo.getUserTasks(userId: userId);
+    final result = await tasksRepo.getUserTasks();
     result.fold(
       (failure) {
         if (!failure.isConnected) {

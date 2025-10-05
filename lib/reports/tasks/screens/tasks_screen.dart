@@ -5,6 +5,7 @@ import 'package:task/core/enums/request_status.dart';
 import 'package:task/core/services/service_locator.dart';
 import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
+import 'package:task/core/widgets/custom_header.dart';
 import 'package:task/core/widgets/no_internet_widget.dart';
 import 'package:task/reports/tasks/cubit/tasks_cubit.dart';
 import 'package:task/reports/tasks/screens/widgets/add_task_dialog.dart';
@@ -23,7 +24,7 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _tasksCubit..getUserTasks(userId: 1),
+      create: (context) => _tasksCubit..getUserTasks(),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
@@ -32,44 +33,10 @@ class _TasksScreenState extends State<TasksScreen> {
             padding: const EdgeInsetsDirectional.all(24.0),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    const Text(
-                      "تقرير المهمات",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18.0,
-                        color: Color(0xFF303A42),
-                      ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () =>
-                          showAddTaskDialog(context, cubit: _tasksCubit),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 12.0,
-                            backgroundColor: Colors.grey[300],
-                            child: const Icon(
-                              Icons.add,
-                              color: AssetsManager.primaryColor,
-                              size: 20.0,
-                            ),
-                          ),
-                          const SizedBox(width: 4.0),
-                          const Text(
-                            "اضافة جديد",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 14.0,
-                              color: AssetsManager.primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                CustomHeaderTitle(
+                  title: "تقرير المهمات",
+                  onPressed: () =>
+                      showAddTaskDialog(context, cubit: _tasksCubit),
                 ),
                 const SizedBox(height: 18.0),
                 const Expanded(child: TasksList()),

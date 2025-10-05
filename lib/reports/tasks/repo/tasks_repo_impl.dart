@@ -19,12 +19,11 @@ class TasksRepoImpl implements TasksRepo {
   TasksRepoImpl({required this.dioHelper});
 
   @override
-  Future<Either<Failure, List<TaskModel>>> getUserTasks({required int userId}) {
+  Future<Either<Failure, List<TaskModel>>> getUserTasks() {
     return safeApiCall<List<TaskModel>>(() async {
       final response = await dioHelper.get(
         headers: {"Authorization": "Bearer ${AppConstants.token}"},
         url: ApiConstants.getUserTasksEndPoint,
-        data: {"ad_id": userId},
       );
       if (response.statusCode == 200) {
         return List<TaskModel>.from(
@@ -120,4 +119,21 @@ class TasksRepoImpl implements TasksRepo {
           throw ServerException(errorMessage: response.data);
         }
       });
+
+  @override
+  Future<Either<Failure, String>> requestEditDeleteTask({
+    required int taskId,
+    required RequestEditDeleteEnum requestEditDelete,
+  }) async => safeApiCall<String>(() async {
+    final response = await dioHelper.post(
+      url: ApiConstants.requestEditDeleteTaskEndPoint,
+      data: {"id": taskId, "request_type": requestEditDelete.toJson()},
+      headers: {"Authorization": "Bearer ${AppConstants.token}"},
+    );
+    if (response.statusCode == 200) {
+      return response.data["message"];
+    } else {
+      throw ServerException(errorMessage: response.data);
+    }
+  });
 }
