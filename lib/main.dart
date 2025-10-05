@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/bloc_observer.dart';
 import 'package:task/core/services/service_locator.dart';
 import 'package:task/core/utils/app_constants.dart';
-import 'package:task/shared/app_cubit/app_cubit.dart';
-import 'package:task/tasks/screens/tasks_screen.dart';
+import 'package:task/reports/tasks/screens/tasks_screen.dart';
+import 'package:task/shared/report_cubit/report_cubit.dart';
 
 void main() {
   ServiceLocator().init();
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: BlocProvider(
-        create: (context) => getIt<AppCubit>(),
+        create: (context) => getIt<ReportCubit>(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

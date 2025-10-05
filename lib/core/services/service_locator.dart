@@ -1,16 +1,16 @@
 import 'package:get_it/get_it.dart';
 import 'package:task/core/network/dio_helper.dart';
-import 'package:task/fuel/cubit/fuel_cubit.dart';
-import 'package:task/fuel/repo/fuel_repo.dart';
-import 'package:task/fuel/repo/fuel_repo_impl.dart';
-import 'package:task/maintenance/cubit/maintenance_cubit.dart';
-import 'package:task/maintenance/repo/maintenance_repo.dart';
-import 'package:task/maintenance/repo/maintenance_repo_impl.dart';
-import 'package:task/shared/app_cubit/app_cubit.dart';
-import 'package:task/shared/app_repo/app_repo.dart';
-import 'package:task/tasks/cubit/tasks_cubit.dart';
-import 'package:task/tasks/repo/tasks_repo.dart';
-import 'package:task/tasks/repo/tasks_repo_impl.dart';
+import 'package:task/reports/fuel/cubit/fuel_cubit.dart';
+import 'package:task/reports/fuel/repo/fuel_repo.dart';
+import 'package:task/reports/fuel/repo/fuel_repo_impl.dart';
+import 'package:task/reports/maintenance/cubit/maintenance_cubit.dart';
+import 'package:task/reports/maintenance/repo/maintenance_repo.dart';
+import 'package:task/reports/maintenance/repo/maintenance_repo_impl.dart';
+import 'package:task/reports/tasks/cubit/tasks_cubit.dart';
+import 'package:task/reports/tasks/repo/tasks_repo.dart';
+import 'package:task/reports/tasks/repo/tasks_repo_impl.dart';
+import 'package:task/shared/report_cubit/report_cubit.dart';
+import 'package:task/shared/report_repo/report_repo.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -30,16 +30,16 @@ class ServiceLocator {
       () => MaintenanceCubit(maintenanceRepo: getIt.get<MaintenanceRepo>()),
     );
     getIt.registerLazySingleton<FuelRepo>(
-          () => FuelRepoImpl(dioHelper: getIt.get<DioHelper>()),
+      () => FuelRepoImpl(dioHelper: getIt.get<DioHelper>()),
     );
     getIt.registerFactory<FuelCubit>(
-          () => FuelCubit(fuelRepo: getIt.get<FuelRepo>()),
+      () => FuelCubit(fuelRepo: getIt.get<FuelRepo>()),
     );
-    getIt.registerLazySingleton<AppRepo>(
-          () => AppRepo(dioHelper: getIt.get<DioHelper>()),
+    getIt.registerLazySingleton<ReportRepo>(
+      () => ReportRepo(dioHelper: getIt.get<DioHelper>()),
     );
-    getIt.registerFactory<AppCubit>(
-          () => AppCubit(appRepo: getIt.get<AppRepo>()),
+    getIt.registerFactory<ReportCubit>(
+      () => ReportCubit(reportRepo: getIt.get<ReportRepo>()),
     );
   }
 }

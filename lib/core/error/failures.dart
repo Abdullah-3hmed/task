@@ -19,29 +19,28 @@ class ServerFailure extends Failure {
     switch (dioError.type) {
       case DioExceptionType.connectionError:
         return const ServerFailure(
-          // 'Connection to API server failed due to internet connection',
-          "No Internet Connection",
+          "لا يوجد اتصال بالإنترنت",
           isConnected: false,
         );
       case DioExceptionType.cancel:
         return const ServerFailure(
-          'Request to API server was cancelled',
+          'تم إلغاء الطلب إلى الخادم',
           isConnected: false,
         );
       case DioExceptionType.connectionTimeout:
         return const ServerFailure(
-          'Connection timeout with API server',
+          'انتهت مهلة الاتصال بالخادم',
           isConnected: false,
         );
       case DioExceptionType.sendTimeout:
         return const ServerFailure(
-          'Send timeout in connection with API server',
+          'انتهت مهلة إرسال البيانات إلى الخادم',
           isConnected: false,
         );
 
       case DioExceptionType.receiveTimeout:
         return const ServerFailure(
-          'Receive timeout in connection with API server',
+          'انتهت مهلة استلام البيانات من الخادم',
           isConnected: false,
         );
       case DioExceptionType.badResponse:
@@ -52,24 +51,24 @@ class ServerFailure extends Failure {
       case DioExceptionType.unknown:
         if (dioError.error is SocketException) {
           return const ServerFailure(
-            'No internet connection',
+            'لا يوجد اتصال بالإنترنت',
             isConnected: false,
           );
         }
         return const ServerFailure(
-          'Unexpected Error , Please try again',
+          'خطأ غير متوقع، يرجى المحاولة مرة أخرى',
           isConnected: false,
         );
       default:
         return ServerFailure(
-          dioError.message ?? 'There was an error, please try again',
+          dioError.message ?? 'حدث خطأ، يرجى المحاولة مرة أخرى',
           isConnected: false,
         );
     }
   }
 
   factory ServerFailure.fromBadResponse(int statusCode, dynamic response) {
-    String message = "There was an error , please try again";
+    String message = "حدث خطأ، يرجى المحاولة مرة أخرى";
 
     if (response is Map && response.containsKey("message")) {
       message = response["message"].toString();
@@ -79,11 +78,10 @@ class ServerFailure extends Failure {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
       return ServerFailure(message);
     } else if (statusCode == 404) {
-      return const ServerFailure('Your request not found , please try later');
+      return const ServerFailure('الطلب غير موجود، يرجى المحاولة لاحقًا');
     } else if (statusCode == 500) {
-      return const ServerFailure('Internal server error , please try later');
+      return const ServerFailure('خطأ داخلي في الخادم، يرجى المحاولة لاحقًا');
     }
-    return const ServerFailure('there was an error , please try again');
+    return const ServerFailure('حدث خطأ، يرجى المحاولة مرة أخرى');
   }
 }
-

@@ -5,12 +5,10 @@ class NoInternetWidget extends StatelessWidget {
   const NoInternetWidget({
     super.key,
     required this.onPressed,
-    this.isLoading = false,
     required this.errorMessage,
   });
 
   final void Function() onPressed;
-  final bool isLoading;
   final String errorMessage;
 
   @override
@@ -21,11 +19,7 @@ class NoInternetWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
-          const Icon(
-            Icons.wifi_off,
-            size: 100.0,
-            color:  Color(0xFF5B8C51),
-          ),
+          const Icon(Icons.wifi_off, size: 100.0, color: Color(0xFF5B8C51)),
           const SizedBox(height: 24.0),
           Text(
             errorMessage,
@@ -34,34 +28,27 @@ class NoInternetWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4.0),
           Text(
-            "Please make sure that you are \n connected to the wifi",
+            "من فضلك تأكد أنك متصل بشبكة الواي فاي",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
           ),
-
           const Spacer(),
           MaterialButton(
             height: 50,
             minWidth: 200,
-            color:  const Color(0xFF5B8C51),
+            color: const Color(0xFF5B8C51),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
-            onPressed: isLoading ? null : onPressed,
-            child: isLoading
-                ? const SpinKitCircle(
-              color: Colors.white,
-              size: 24.0,
-            )
-                : const Text(
-              "Try Again",
+            onPressed: onPressed,
+            child: const Text(
+              "إعادة المحاولة",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-
           const Spacer(flex: 2),
         ],
       ),

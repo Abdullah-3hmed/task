@@ -1,9 +1,7 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:task/core/error/failures.dart';
 import 'package:task/core/error/server_exception.dart';
-
 
 Future<Either<Failure, T>> safeApiCall<T>(Future<T> Function() apiCall) async {
   try {

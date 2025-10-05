@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
 import 'package:task/core/utils/show_toast.dart';
-import 'package:task/tasks/cubit/tasks_cubit.dart';
-import 'package:task/tasks/cubit/tasks_state.dart';
-import 'package:task/tasks/data/task_model.dart';
+import 'package:task/reports/tasks/cubit/tasks_cubit.dart';
+import 'package:task/reports/tasks/cubit/tasks_state.dart';
+import 'package:task/reports/tasks/data/task_model.dart';
 import 'custom_dialog.dart';
 
 class CustomDismissible extends StatelessWidget {
@@ -82,7 +82,7 @@ class CustomDismissible extends StatelessWidget {
               builder: (_) => CustomDialog(
                 message: deleteMessage,
                 onConfirm: () {
-                 onRequestDelete();
+                  onRequestDelete();
                 },
               ),
             );

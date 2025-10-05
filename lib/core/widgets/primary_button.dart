@@ -34,7 +34,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: isLoading == true
-          ?  const SpinKitThreeBounce(
+          ? const SpinKitThreeBounce(
               color: Colors.white,
               size: 20.0,
               duration: Duration(milliseconds: 900),

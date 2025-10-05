@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/core/enums/request_status.dart';
+import 'package:task/core/utils/assets_manager.dart';
 import 'package:task/core/utils/show_toast.dart';
 import 'package:task/core/widgets/primary_button.dart';
-import 'package:task/shared/app_cubit/app_cubit.dart';
-import 'package:task/shared/app_cubit/app_state.dart';
+import 'package:task/shared/report_cubit/app_state.dart';
+import 'package:task/shared/report_cubit/report_cubit.dart';
 
 class CustomDialog extends StatelessWidget {
   final String message;
@@ -61,14 +62,14 @@ class CustomDialog extends StatelessWidget {
                       child: PrimaryButton(
                         text: "إلغاء",
                         onPressed: () => Navigator.pop(context, false),
-                        textColor: const Color(0xFF5B8C51),
+                        textColor: AssetsManager.primaryColor,
                         backgroundColor: Colors.white,
-                        borderColor: const Color(0xFF5B8C51),
+                        borderColor: AssetsManager.primaryColor,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: BlocConsumer<AppCubit, AppState>(
+                      child: BlocConsumer<ReportCubit, ReportState>(
                         listenWhen: (prev, curr) =>
                             prev.requestEditDeleteState !=
                             curr.requestEditDeleteState,

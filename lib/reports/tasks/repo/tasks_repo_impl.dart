@@ -1,0 +1,123 @@
+import 'package:dartz/dartz.dart';
+import 'package:task/core/enums/request_edit_delete_enum.dart';
+import 'package:task/core/error/failures.dart';
+import 'package:task/core/error/server_exception.dart';
+import 'package:task/core/network/api_constants.dart';
+import 'package:task/core/network/dio_helper.dart';
+import 'package:task/core/utils/app_constants.dart';
+import 'package:task/core/utils/safe_api_call.dart';
+import 'package:task/reports/tasks/data/add_and_edit_task_response_model.dart';
+import 'package:task/reports/tasks/data/add_task_request_model.dart';
+import 'package:task/reports/tasks/data/edit_task_request_model.dart';
+import 'package:task/reports/tasks/data/start_and_end_task_request_model.dart';
+import 'package:task/reports/tasks/data/task_model.dart';
+import 'package:task/reports/tasks/repo/tasks_repo.dart';
+
+class TasksRepoImpl implements TasksRepo {
+  final DioHelper dioHelper;
+
+  TasksRepoImpl({required this.dioHelper});
+
+  @override
+  Future<Either<Failure, List<TaskModel>>> getUserTasks({required int userId}) {
+    return safeApiCall<List<TaskModel>>(() async {
+      final response = await dioHelper.get(
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        url: ApiConstants.getUserTasksEndPoint,
+        data: {"ad_id": userId},
+      );
+      if (response.statusCode == 200) {
+        return List<TaskModel>.from(
+          (response.data["data"] ?? []).map((x) => TaskModel.fromJson(x)),
+        );
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, AddAndEditTaskResponseModel>> addTask({
+    required AddTaskRequestModel addTaskRequestModel,
+  }) async {
+    return safeApiCall<AddAndEditTaskResponseModel>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.addTaskEndPoint,
+        data: addTaskRequestModel.toJson(),
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+      );
+      if (response.statusCode == 200) {
+        return AddAndEditTaskResponseModel.fromJson(response.data);
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, String>> startTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    return safeApiCall<String>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.startTaskEndpoint,
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        data: startAndEndTaskRequestModel.toJson(),
+      );
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, String>> endTask({
+    required StartAndEndTaskRequestModel startAndEndTaskRequestModel,
+  }) async {
+    return safeApiCall<String>(() async {
+      final response = await dioHelper.post(
+        url: ApiConstants.endTaskEndpoint,
+        headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        data: startAndEndTaskRequestModel.toJson(),
+      );
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        throw ServerException(errorMessage: response.data);
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, AddAndEditTaskResponseModel>> editTask({
+    required EditTaskRequestModel editTaskRequestModel,
+  }) => safeApiCall<AddAndEditTaskResponseModel>(() async {
+    final response = await dioHelper.post(
+      url: ApiConstants.editTaskEndPoint,
+      data: editTaskRequestModel.toJson(),
+      headers: {"Authorization": "Bearer ${AppConstants.token}"},
+    );
+    if (response.statusCode == 200) {
+      return AddAndEditTaskResponseModel.fromJson(response.data);
+    } else {
+      throw ServerException(errorMessage: response.data);
+    }
+  });
+
+  @override
+  Future<Either<Failure, String>> deleteTask({required int taskId}) =>
+      safeApiCall<String>(() async {
+        final response = await dioHelper.post(
+          url: ApiConstants.deleteTaskEndPoint,
+          data: {"id": taskId},
+          headers: {"Authorization": "Bearer ${AppConstants.token}"},
+        );
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        } else {
+          throw ServerException(errorMessage: response.data);
+        }
+      });
+}
